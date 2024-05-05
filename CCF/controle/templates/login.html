@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <main class="relative min-h-screen w-full bg-white">
+        <div x-data="app">
+            <div x-data="alertComponent" class="p-4 grid w-screen place-items-center">
+                {% if messages %}
+                    <div
+                        x-show="showAlert"
+                        x-init="autoDismiss()"
+                        x-transition:leave="transition ease-in duration-1000"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        role="alert"
+                    >
+                        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                            Erro
+                        </div>
+                        <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                            <ul>
+                            {% for message in messages %}
+                                <li class="text-red-500">{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="absolute left-1/2 top-1/2 mx-auto w-1/4 -translate-x-1/2 -translate-y-1/2 transform text-center">
+                <form 
+                    method="post"
+                    action="{% url 'login' %}"
+                    class="space-y-4"
+                >
+                    {% csrf_token %}
+                    <header class="mb-3 text-2xl font-bold">Faça login</header>
+                    <div class="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
+                        <input type="text" name="username" placeholder="Nome de usuário" class="my-3 bg-gray-50 w-full border-none bg-transparente outline-none" required />
+                    </div>
+                    <div class="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
+                        <input type="password" name="password" placeholder="Senha" class="my-3 bg-gray-50 w-full border-none bg-transparente outline-none" required />
+                    </div>
+                    <button type="submit" class="w-full rounded-2xl border-b-4 border-b-blue-600 bg-blue-500 py-3 font-bold text-white hover:bg-blue-400 active:translate-y-[0.125rem] active:border-b-blue-400">ENTRAR</button>
+                </form>
+                <div class="text-center mt-6">
+                    <p class="mt-4 text-sm">Não tem uma conta? 
+                        <a href="{% url 'register' %}" class="underline cursor-pointer">Crie uma!</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data("alertComponent", () => ({
+                showAlert: true,
+                autoDismiss() {
+                    setTimeout(() => {
+                        this.showAlert = false;
+                    }, 2000); // 2 segundos para desaparecer
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
