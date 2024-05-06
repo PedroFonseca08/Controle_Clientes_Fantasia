@@ -49,3 +49,11 @@ def register_view(request):
         form = UserCreationForm()
 
     return render(request, 'register.html', {'form': form})
+
+
+def clientes_view(request): 
+    return render(request, 'clientes.html') 
+
+
+def fantasias_view(request): 
+    return render(request, 'fantasias.html')
