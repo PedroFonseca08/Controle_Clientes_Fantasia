@@ -119,7 +119,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = "/var/www/example.com/static/"
+STATIC_ROOT = BASE_DIR / 'productionfiles'
 
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static'),
