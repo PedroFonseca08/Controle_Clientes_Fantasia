@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
+from django.http import JsonResponse
+from .models import Cliente
 
 def index(request):
     if request.method == 'GET':
@@ -62,59 +64,71 @@ def historico_view(request):
     return render(request, 'historico.html')
 
 def clientes(request):
-    template = loader.get_template('livros.html')
+
+    if request.method == 'POST':
+        novo_cliente = Cliente(
+            usuario=request.user,
+            nome_cliente=request.POST.get('nome'),
+            cpf_cliente=request.POST.get('cpf'),
+            tel_cliente=request.POST.get('telefone'),
+            rg_cliente=request.POST.get('rg'),
+            cep_cliente=request.POST.get('cep'),
+            end_cliente=request.POST.get('endereco'),
+            data_nasc_cliente=request.POST.get('data_nasc') or None,
+            observacao_cliente=request.POST.get('observacao'),
+        )
+        novo_cliente.save()
+    
+    clientes = Cliente.objects.all()
+
     context = {
-        'livros': [
-            {
-                "nome": "O Senhor dos Anéis",
-                "autor": "J.R.R. Tolkien",
-                "ano": 1954
-            },
-            {
-                "nome": "1984",
-                "autor": "George Orwell",
-                "ano": 1949
-            },
-            {
-                "nome": "Dom Quixote",
-                "autor": "Miguel de Cervantes",
-                "ano": 1605
-            },
-            {
-                "nome": "Cem Anos de Solidão",
-                "autor": "Gabriel García Márquez",
-                "ano": 1967
-            },
-            {
-                "nome": "Harry Potter e a Pedra Filosofal",
-                "autor": "J.K. Rowling",
-                "ano": 1997
-            },
-            {
-                "nome": "Crime e Castigo",
-                "autor": "Fiódor Dostoiévski",
-                "ano": 1866
-            },
-            {
-                "nome": "A Metamorfose",
-                "autor": "Franz Kafka",
-                "ano": 1915
-            },
-            {
-                "nome": "O Grande Gatsby",
-                "autor": "F. Scott Fitzgerald",
-                "ano": 1925
-            },
-            {
-                "nome": "Orgulho e Preconceito",
-                "autor": "Jane Austen",
-                "ano": 1813
-            },
-            {
-                "nome": "Os Miseráveis",
-                "autor": "Victor Hugo",
-                "ano": 1862
-            }
-        ]
+        'clientes': clientes
     }
-    return HttpResponse(template.render(context, request))
+
+    return render(request, 'clientes.html', context)
+
+
+def detalhes_cliente(request, id_cliente):
+    try:
+        cliente = Cliente.objects.get(pk=id_cliente)
+        cliente_data = {
+            'id': cliente.pk,
+            'nome': cliente.nome_cliente,
+            'cpf': cliente.cpf_cliente,
+            'telefone': cliente.tel_cliente,
+            'endereco': cliente.end_cliente,
+            'rg': cliente.rg_cliente,
+            'data_nasc': cliente.data_nasc_cliente.strftime('%Y-%m-%d') if cliente.data_nasc_cliente else None,
+            'cep': cliente.cep_cliente,
+            'observacao': cliente.observacao_cliente,
+        }
+        return JsonResponse(cliente_data)
+    except Cliente.DoesNotExist:
+        return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def editar_cliente(request, id_cliente):
+    
+    cliente = get_object_or_404(Cliente, pk=id_cliente)
+
+    if request.method == 'POST':
+        cliente.nome_cliente = request.POST.get('nome_edit')
+        cliente.cpf_cliente = request.POST.get('cpf_edit')
+        cliente.tel_cliente = request.POST.get('telefone_edit')
+        cliente.rg_cliente = request.POST.get('rg_edit')
+        cliente.cep_cliente = request.POST.get('cep_edit')
+        cliente.end_cliente = request.POST.get('endereco_edit')
+        cliente.data_nasc_cliente = request.POST.get('data_nasc_edit') or None
+        cliente.observacao_cliente = request.POST.get('observacao_edit')
+
+        cliente.save()
+    
+    clientes = Cliente.objects.all()
+
+    context = {
+        'clientes': clientes
+    }
+
+    return render(request, 'clientes.html', context)
