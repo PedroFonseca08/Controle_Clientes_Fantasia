@@ -39,7 +39,7 @@
                         {% for cliente in clientes %}
                         <tr class="bg-white border-b">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ cliente.nome_cliente }}
+                                {{ cliente.nome_cliente|truncatechars:52 }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ cliente.tel_cliente }}
@@ -82,27 +82,27 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
-                            <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o nome do cliente..." required="">
+                            <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o nome do cliente..." required="" onblur="validateNome('nome')">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label class="block mb-2 text-sm font-medium text-gray-900">CPF</label>
-                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CPF do cliente..." required="">
+                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CPF do cliente..." required="" onblur="validateCPF('cpf')">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
-                        <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="">
+                        <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="" onblur="validateTel('telefone')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
-                        <input type="text" name="rg" id="rg" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o RG do cliente...(opcional)">
+                        <input type="text" name="rg" id="rg" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o RG do cliente...(opcional)" onblur="validateRG('rg')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
-                        <input type="text" name="cep" id="cep" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CEP do cliente... (opcional)">
+                        <input type="text" name="cep" id="cep" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CEP do cliente... (opcional)" onblur="validateCep('cep', 'C')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Endereço</label>
-                        <input type="text" name="endereco" id="endereco" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o endereço do cliente..." required="">
+                        <input type="text" name="endereco" id="endereco" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o endereço do cliente..." required="" onblur="validateEndereco('endereco')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -110,7 +110,7 @@
                     </div>
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea id="observacao" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)"></textarea>                    
+                            <textarea id="observacao" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
                         </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -147,27 +147,27 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
-                            <input type="text" name="nome_edit" id="nome_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                            <input type="text" name="nome_edit" id="nome_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNome('nome_edit')">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label class="block mb-2 text-sm font-medium text-gray-900">CPF</label>
-                            <input type="text" name="cpf_edit" id="cpf_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                            <input type="text" name="cpf_edit" id="cpf_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateCPF('cpf_edit')">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
-                        <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                        <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateTel('telefone_edit')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
-                        <input type="text" name="rg_edit" id="rg_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <input type="text" name="rg_edit" id="rg_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateRG('rg_edit')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
-                        <input type="text" name="cep_edit" id="cep_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <input type="text" name="cep_edit" id="cep_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateCep('cep_edit', 'E')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Endereço</label>
-                        <input type="text" name="endereco_edit" id="endereco_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                        <input type="text" name="endereco_edit" id="endereco_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateEndereco('endereco_edit')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -175,7 +175,7 @@
                     </div>
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea id="observacao_edit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>                    
+                            <textarea id="observacao_edit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
                         </div>
                     </div>
                     <button type="button" onclick="editarCliente()" data-modal-toggle="editar-modal" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
