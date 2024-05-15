@@ -229,12 +229,13 @@ function validateCep(inputId, funcao) {
             if (data.erro) {
                 return;
             }
-            var endereco = data.bairro + ", " + data.logradouro;
-            if(funcao == 'E')
-                document.getElementById('endereco_edit').value = endereco;
-            else if(funcao == 'C')
-                document.getElementById('endereco').value = endereco;
-            
+            if ( data.bairro != '' && data.logradouro != ''){
+                var endereco = data.bairro + ", " + data.logradouro;
+                if(funcao == 'E')
+                    document.getElementById('endereco_edit').value = endereco;
+                else if(funcao == 'C')
+                    document.getElementById('endereco').value = endereco;
+            }  
         })
         .catch(error => {
             console.error('Erro ao obter dados do CEP:', error);
