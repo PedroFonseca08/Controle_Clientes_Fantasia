@@ -1,18 +1,18 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout as logout_django
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Cliente
+from .models import Cliente, Fantasia
+from PIL import Image
 
+@login_required(login_url="/controle/login")
 def index(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            return render(request, 'index.html')  
-        return render(request, 'login.html') 
+    return render(request, 'index.html')  
     
 def login_view(request):
     print(10)
@@ -52,17 +52,44 @@ def register_view(request):
 
     return render(request, 'register.html', {'form': form})
 
+def logout(request):
+    logout_django(request)
+    return render(request, 'login.html')
 
+@login_required(login_url="/controle/login")
 def clientes_view(request): 
     return render(request, 'clientes.html') 
 
+@login_required(login_url="/controle/login")
+def fantasias_view(request):
+    if request.method == "GET":
+        # Pego todas as minhas fantasias do BD e mando pra minha página:
+        fantasias = Fantasia.objects.all().values()
+        context = {
+            'fantasias': fantasias
+        }
+        return render(request, 'fantasias.html', context)
+    else: # Será por método POST
 
-def fantasias_view(request): 
-    return render(request, 'fantasias.html')
+        nome = request.POST.get('nome_fantasia')
+        qtdEstoque = request.POST.get('qtd_estoque')
+        observacao = request.POST.get('observacao')
+        file = request.FILES.get('img_fantasia')
+        
+        #Para manipular a imagem tem que usar o Pilow ?
+        #img = Image.open(file)
+        #img.resize(512, 640)
 
+        fantasia = Fantasia(nome_fantasia=nome, estoque_fantasia=qtdEstoque, imagem_fantasia=file, observacao_fantasia=observacao)
+        fantasia.save()
+
+        return HttpResponseRedirect(reverse('fantasias')) 
+
+@login_required(login_url="/controle/login")
 def historico_view(request): 
     return render(request, 'historico.html')
 
+@login_required(login_url="/controle/login")
 def clientes(request):
 
     if request.method == 'POST':
@@ -87,7 +114,7 @@ def clientes(request):
 
     return render(request, 'clientes.html', context)
 
-
+@login_required(login_url="/controle/login")
 def detalhes_cliente(request, id_cliente):
     try:
         cliente = Cliente.objects.get(pk=id_cliente)
@@ -108,7 +135,7 @@ def detalhes_cliente(request, id_cliente):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
+@login_required(login_url="/controle/login")
 def editar_cliente(request, id_cliente):
     
     cliente = get_object_or_404(Cliente, pk=id_cliente)

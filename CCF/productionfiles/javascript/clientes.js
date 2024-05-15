@@ -24,7 +24,7 @@ editarButtons.forEach(button => {
     button.addEventListener("click", function() {
         const clienteId = button.dataset.clienteId;
         currentClientId = clienteId
-        fetch(`/controle/clientes/${clienteId}/`)
+        fetch(`../clientes/${clienteId}/`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro ao obter os dados do cliente');
@@ -56,7 +56,7 @@ function editarCliente() {
     
     formData.append('cliente_id', clienteId);
 
-    fetch(`/controle/clientes/editar/${clienteId}/`, {
+    fetch(`../clientes/editar/${clienteId}/`, {
         method: 'POST',
         body: formData
     })
@@ -64,7 +64,7 @@ function editarCliente() {
         if (!response.ok) {
             throw new Error('Erro ao editar o cliente');
         }
-        window.location.href = '/controle/clientes/';
+        window.location.href = '../clientes/';
     })
     .catch(error => {
         console.error('Erro ao editar o cliente:', error.message);
