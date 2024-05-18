@@ -100,7 +100,12 @@ def clientes(request):
             tel_cliente=request.POST.get('telefone'),
             rg_cliente=request.POST.get('rg'),
             cep_cliente=request.POST.get('cep'),
-            end_cliente=request.POST.get('endereco'),
+            logradouro_cliente=request.POST.get('logradouro'),
+            num_logradouro=request.POST.get('num_logradouro'),
+            complemento_logradouro=request.POST.get('complemento_logradouro'),
+            bairro_logradouro=request.POST.get('bairro_logradouro'),
+            uf_logradouro=request.POST.get('uf_logradouro'),
+            municipio_logradouro=request.POST.get('municipio_logradouro'), 
             data_nasc_cliente=request.POST.get('data_nasc') or None,
             observacao_cliente=request.POST.get('observacao'),
         )
@@ -123,7 +128,12 @@ def detalhes_cliente(request, id_cliente):
             'nome': cliente.nome_cliente,
             'cpf': cliente.cpf_cliente,
             'telefone': cliente.tel_cliente,
-            'endereco': cliente.end_cliente,
+            'logradouro': cliente.logradouro_cliente,
+            'num_logradouro': cliente.num_logradouro,
+            'complemento_logradouro': cliente.complemento_logradouro,
+            'bairro_logradouro': cliente.bairro_logradouro,
+            'uf_logradouro': cliente.uf_logradouro,
+            'municipio_logradouro': cliente.municipio_logradouro,
             'rg': cliente.rg_cliente,
             'data_nasc': cliente.data_nasc_cliente.strftime('%Y-%m-%d') if cliente.data_nasc_cliente else None,
             'cep': cliente.cep_cliente,
@@ -146,7 +156,12 @@ def editar_cliente(request, id_cliente):
         cliente.tel_cliente = request.POST.get('telefone_edit')
         cliente.rg_cliente = request.POST.get('rg_edit')
         cliente.cep_cliente = request.POST.get('cep_edit')
-        cliente.end_cliente = request.POST.get('endereco_edit')
+        cliente.logradouro_cliente = request.POST.get('logradouro_edit')
+        cliente.num_logradouro = request.POST.get('num_logradouro_edit')
+        cliente.complemento_logradouro = request.POST.get('complemento_logradouro_edit')
+        cliente.bairro_logradouro = request.POST.get('bairro_logradouro_edit')
+        cliente.uf_logradouro = request.POST.get('uf_logradouro_edit')
+        cliente.municipio_logradouro = request.POST.get('municipio_logradouro_edit')
         cliente.data_nasc_cliente = request.POST.get('data_nasc_edit') or None
         cliente.observacao_cliente = request.POST.get('observacao_edit')
 

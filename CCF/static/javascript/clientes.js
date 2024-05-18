@@ -31,13 +31,19 @@ editarButtons.forEach(button => {
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(
+                data => {
                 document.getElementById('nome_edit').value = data.nome;
                 document.getElementById('cpf_edit').value = data.cpf;
                 document.getElementById('telefone_edit').value = data.telefone;
                 document.getElementById('rg_edit').value = data.rg;
                 document.getElementById('cep_edit').value = data.cep;
-                document.getElementById('endereco_edit').value = data.endereco;
+                document.getElementById('logradouro_edit').value = data.logradouro;
+                document.getElementById('num_logradouro_edit').value = data.num_logradouro;
+                document.getElementById('complemento_logradouro_edit').value = data.complemento_logradouro;
+                document.getElementById('bairro_logradouro_edit').value = data.bairro_logradouro;
+                document.getElementById('uf_logradouro_edit').value = data.uf_logradouro;
+                document.getElementById('municipio_logradouro_edit').value = data.municipio_logradouro;
                 document.getElementById('data_nasc_edit').value = data.data_nasc;
                 document.getElementById('observacao_edit').value = data.observacao;
             })
@@ -229,26 +235,75 @@ function validateCep(inputId, funcao) {
             if (data.erro) {
                 return;
             }
-            if ( data.bairro != '' && data.logradouro != ''){
-                var endereco = data.bairro + ", " + data.logradouro;
-                if(funcao == 'E')
-                    document.getElementById('endereco_edit').value = endereco;
-                else if(funcao == 'C')
-                    document.getElementById('endereco').value = endereco;
-            }  
+            if(funcao == 'E'){
+                document.getElementById('logradouro_edit').value = data.logradouro;
+                document.getElementById('bairro_logradouro_edit').value = data.bairro;
+                document.getElementById('uf_logradouro_edit').value = data.uf;
+                document.getElementById('municipio_logradouro_edit').value = data.localidade;
+            }
+            else if(funcao == 'C'){
+                document.getElementById('logradouro').value = data.logradouro;
+                document.getElementById('bairro_logradouro').value = data.bairro;
+                document.getElementById('uf_logradouro').value = data.uf;
+                document.getElementById('municipio_logradouro').value = data.localidade;
+            }
         })
         .catch(error => {
             console.error('Erro ao obter dados do CEP:', error);
         });
 }
 
-
-function validateEndereco(inputId) {
+function validateLogradouro(inputId) {
     var endInput = document.getElementById(inputId);
 
     if (endInput.value.length > 150) {
         endInput.value = '';
-        alert('O endereço deve ter 150 caracteres no máximo.');
+        alert('O logradouro deve ter 150 caracteres no máximo.');
+    }
+}
+
+function validateNumLogradouro(inputId) {
+    var endInput = document.getElementById(inputId);
+
+    if (endInput.value.length > 15) {
+        endInput.value = '';
+        alert('O número do logradouro deve ter 15 caracteres no máximo.');
+    }
+}
+
+function validateComplemento(inputId) {
+    var endInput = document.getElementById(inputId);
+
+    if (endInput.value.length > 100) {
+        endInput.value = '';
+        alert('O complemento deve ter 100 caracteres no máximo.');
+    }
+}
+
+function validateBairro(inputId) {
+    var endInput = document.getElementById(inputId);
+
+    if (endInput.value.length > 100) {
+        endInput.value = '';
+        alert('O bairro deve ter 100 caracteres no máximo.');
+    }
+}
+
+function validateUF(inputId) {
+    var endInput = document.getElementById(inputId);
+
+    if (endInput.value.length > 2) {
+        endInput.value = '';
+        alert('O Estado deve ter 2 caracteres no máximo.');
+    }
+}
+
+function validateMunicipio(inputId) {
+    var endInput = document.getElementById(inputId);
+
+    if (endInput.value.length > 100) {
+        endInput.value = '';
+        alert('O Município deve ter 100 caracteres no máximo.');
     }
 }
 

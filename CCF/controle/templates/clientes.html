@@ -101,8 +101,28 @@
                         <input type="text" name="cep" id="cep" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CEP do cliente... (opcional)" onblur="validateCep('cep', 'C')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
-                        <label class="block mb-2 text-sm font-medium text-gray-900">Endereço</label>
-                        <input type="text" name="endereco" id="endereco" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o endereço do cliente..." required="" onblur="validateEndereco('endereco')">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
+                        <input type="text" name="logradouro" id="logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o logradouro do cliente..." required="" onblur="validateLogradouro('logradouro')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
+                        <input type="text" name="num_logradouro" id="num_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o número..." required="" onblur="validateNumLogradouro('num_logradouro')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
+                        <input type="text" name="complemento_logradouro" id="complemento_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o complemento... (opcional)" onblur="validateComplemento('complemento_logradouro')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
+                        <input type="text" name="bairro_logradouro" id="bairro_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o bairro... (opcional)" onblur="validateBairro('bairro_logradouro')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
+                        <input type="text" name="uf_logradouro" id="uf_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Estado... (opcional)" onblur="validateUF('uf_logradouro')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
+                        <input type="text" name="municipio_logradouro" id="municipio_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Município... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -110,7 +130,7 @@
                     </div>
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea id="observacao" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
+                            <textarea name="observacao" id="observacao" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
                         </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -166,8 +186,28 @@
                         <input type="text" name="cep_edit" id="cep_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateCep('cep_edit', 'E')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
-                        <label class="block mb-2 text-sm font-medium text-gray-900">Endereço</label>
-                        <input type="text" name="endereco_edit" id="endereco_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateEndereco('endereco_edit')">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
+                        <input type="text" name="logradouro_edit" id="logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateLogradouro('logradouro_edit')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
+                        <input type="text" name="num_logradouro_edit" id="num_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNumLogradouro('num_logradouro_edit')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
+                        <input type="text" name="complemento_logradouro_edit" id="complemento_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateComplemento('complemento_logradouro_edit')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
+                        <input type="text" name="bairro_logradouro_edit" id="bairro_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateBairro('bairro_logradouro_edit')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
+                        <input type="text" name="uf_logradouro_edit" id="uf_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateUF('uf_logradouro_edit')">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
+                        <input type="text" name="municipio_logradouro_edit" id="municipio_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -175,7 +215,7 @@
                     </div>
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea id="observacao_edit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
+                            <textarea name="observacao_edit" id="observacao_edit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
                         </div>
                     </div>
                     <button type="button" onclick="editarCliente()" data-modal-toggle="editar-modal" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
