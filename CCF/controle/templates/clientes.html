@@ -4,13 +4,13 @@
 
     <div class="pt-4 pl-4">
         <!-- Modal toggle -->
-        <div class="fixed">
+        <div class="lg:fixed flex justify-center pb-5">
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
                 Adicionar Cliente
             </button>
         </div>
         <div class="flex justify-center">
-            <div  class="flex flex-col w-3/5">
+            <div  class="flex flex-col lg:w-3/5 w-4/5">
             <div class="pb-4">
                 <div class="relative mt-1">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -18,7 +18,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </div>
-                    <input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Busque por um cliente...">
+                    <input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Busque por um cliente...">
                 </div>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -62,7 +62,7 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <div class="flex items-center justify-between p-4 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-gray-900">
                         Adicionar Novo Cliente
                     </h3>
@@ -79,58 +79,58 @@
                 action="{% url 'clientes' %}"
                 >
                     {% csrf_token %}
-                    <div class="grid gap-4 mb-4 grid-cols-2">
-                        <div class="col-span-2">
+                    <div class="grid gap-4 mb-4 grid-cols-6">
+                        <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
                             <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o nome do cliente..." required="" onblur="validateNome('nome')">
                         </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label class="block mb-2 text-sm font-medium text-gray-900">CPF</label>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">CPF/CNPJ</label>
                             <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CPF do cliente..." required="" onblur="validateCPF('cpf')">
                         </div>
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
                         <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="" onblur="validateTel('telefone')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
                         <input type="text" name="rg" id="rg" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o RG do cliente...(opcional)" onblur="validateRG('rg')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
                         <input type="text" name="cep" id="cep" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CEP do cliente... (opcional)" onblur="validateCep('cep', 'C')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-4">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
                         <input type="text" name="logradouro" id="logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o logradouro do cliente..." required="" onblur="validateLogradouro('logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
                         <input type="text" name="num_logradouro" id="num_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o número..." required="" onblur="validateNumLogradouro('num_logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
                         <input type="text" name="complemento_logradouro" id="complemento_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o complemento... (opcional)" onblur="validateComplemento('complemento_logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
                         <input type="text" name="bairro_logradouro" id="bairro_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o bairro... (opcional)" onblur="validateBairro('bairro_logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
                         <input type="text" name="uf_logradouro" id="uf_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Estado... (opcional)" onblur="validateUF('uf_logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
                         <input type="text" name="municipio_logradouro" id="municipio_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Município... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
                         <input type="date" name="data_nasc" id="data_nasc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
-                        <div class="col-span-2">
+                        <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea name="observacao" id="observacao" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
+                            <textarea name="observacao" id="observacao" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
                         </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -148,7 +148,7 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <div class="flex items-center justify-between p-4 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-gray-900">
                         Editar Cliente
                     </h3>
@@ -164,58 +164,58 @@
                 id="editar-form"
                 >
                     {% csrf_token %}
-                    <div class="grid gap-4 mb-4 grid-cols-2">
-                        <div class="col-span-2">
+                    <div class="grid gap-4 mb-4 grid-cols-6">
+                        <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
                             <input type="text" name="nome_edit" id="nome_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNome('nome_edit')">
                         </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label class="block mb-2 text-sm font-medium text-gray-900">CPF</label>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">CPF/CNPJ</label>
                             <input type="text" name="cpf_edit" id="cpf_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateCPF('cpf_edit')">
                         </div>
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
                         <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateTel('telefone_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
                         <input type="text" name="rg_edit" id="rg_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateRG('rg_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
                         <input type="text" name="cep_edit" id="cep_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateCep('cep_edit', 'E')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-4">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
                         <input type="text" name="logradouro_edit" id="logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateLogradouro('logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
                         <input type="text" name="num_logradouro_edit" id="num_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNumLogradouro('num_logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
                         <input type="text" name="complemento_logradouro_edit" id="complemento_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateComplemento('complemento_logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
                         <input type="text" name="bairro_logradouro_edit" id="bairro_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateBairro('bairro_logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
                         <input type="text" name="uf_logradouro_edit" id="uf_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateUF('uf_logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
                         <input type="text" name="municipio_logradouro_edit" id="municipio_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
                         <input type="date" name="data_nasc_edit" id="data_nasc_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
-                        <div class="col-span-2">
+                        <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea name="observacao_edit" id="observacao_edit" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
+                            <textarea name="observacao_edit" id="observacao_edit" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
                         </div>
                     </div>
                     <button type="button" onclick="editarCliente()" data-modal-toggle="editar-modal" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
