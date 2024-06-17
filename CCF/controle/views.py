@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Cliente, Fantasia
+from .models import Cliente, ClienteFantasia, Fantasia
 from PIL import Image
 
 @login_required(login_url="/controle/login")
@@ -84,10 +84,6 @@ def fantasias_view(request):
         fantasia.save()
 
         return HttpResponseRedirect(reverse('fantasias')) 
-
-@login_required(login_url="/controle/login")
-def historico_view(request): 
-    return render(request, 'historico.html')
 
 @login_required(login_url="/controle/login")
 def clientes(request):
@@ -174,3 +170,66 @@ def editar_cliente(request, id_cliente):
     }
 
     return render(request, 'clientes.html', context)
+
+
+@login_required(login_url="/controle/login")
+def historico_view(request):
+
+    if request.method == 'POST':
+        novo_cliente_fantasia = ClienteFantasia(
+            cliente=request.POST.get('data_nasc'),
+            fantasia=request.POST.get('data_nasc'),
+            data_nasc_cliente=request.POST.get('data_nasc') or None,
+        )
+        novo_cliente_fantasia.save()
+    
+    clientesFantasia = ClienteFantasia.objects.all()
+
+    context = {
+        'historico': clientesFantasia
+    }
+
+    return render(request, 'historico.html', context)
+
+@login_required(login_url="/controle/login")
+def detalhes_fantasia_cliente(request, id_cliente_fantasia):
+    try:
+        cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
+        cliente_fantasia_data = {
+            'nome': cliente_fantasia.cliente.nome_cliente,
+            'nome_fantasia': cliente_fantasia.fantasia,
+            'preco_fantasia': cliente_fantasia.preco_fantasia,
+            'tipo_fantasia': cliente_fantasia.tipo_fantasia,
+            'data_inicio_fantasia': cliente_fantasia.data_inicio_fantasia,
+            'data_fim_fantasia': cliente_fantasia.data_fim_fantasia.strftime('%Y-%m-%d') if cliente_fantasia.data_fim_fantasia else None,
+        }
+        return JsonResponse(cliente_fantasia_data)
+    except Cliente.DoesNotExist:
+        return JsonResponse({'error': 'Cliente Fantasia não encontrado'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+@login_required(login_url="/controle/login")
+def editar_fantasia_cliente(request, id_cliente_fantasia):
+    
+    cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
+
+    if request.method == 'POST':
+        cliente_fantasia.fantasia = request.POST.get('fantasia')
+        cliente_fantasia.preco_fantasia = request.POST.get('preco_fantasia')
+        cliente_fantasia.tipo_fantasia = request.POST.get('tipo_fantasia')
+        cliente_fantasia.data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
+        if cliente_fantasia.tipo_fantasia == 'A':
+            cliente_fantasia.data_fim_fantasia = request.POST.get('data_fim_fantasia')
+        else:
+            cliente_fantasia.data_fim_fantasia = None
+
+        cliente_fantasia.save()
+    
+    clientesFantasia = ClienteFantasia.objects.all()
+
+    context = {
+        'historico': clientesFantasia
+    }
+
+    return render(request, 'historico.html', context)

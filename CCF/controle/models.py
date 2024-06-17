@@ -28,20 +28,12 @@ class Fantasia(models.Model):
 
 class ClienteFantasia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    fantasia = models.ForeignKey(Fantasia, on_delete=models.CASCADE)
+    fantasia = models.CharField(max_length=80, null=False) 
     preco_fantasia = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     data_inicio_fantasia = models.DateField()
     data_fim_fantasia = models.DateField(blank=True, null=True)
-    baixa_fantasia = models.CharField(max_length=1, null=False) 
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['cliente', 'fantasia', 'data_inicio_fantasia'],
-                name='unique_cliente_fantasia_data_inicio'
-            )
-        ]
-            
+    tipo_fantasia = models.CharField(max_length=1, null=False) 
+    baixa_fantasia = models.CharField(max_length=1, null=False)    
 
 Cliente.fantasias = models.ManyToManyField(
     Fantasia, through=ClienteFantasia, related_name='clientes'
