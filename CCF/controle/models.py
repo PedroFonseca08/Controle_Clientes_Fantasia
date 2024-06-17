@@ -7,15 +7,16 @@ class Cliente(models.Model):
     nome_cliente = models.CharField(max_length=100, null=False)
     cpf_cliente = models.CharField(max_length=18, unique=True, null=False)
     tel_cliente = models.CharField(max_length=14, null=False)
+    tel2_cliente = models.CharField(max_length=14, null=True)
     logradouro_cliente = models.CharField(max_length=150, null=False)
     num_logradouro = models.CharField(max_length=15, null=False)
     complemento_logradouro = models.CharField(max_length=100, blank=True, null=True)
     bairro_logradouro = models.CharField(max_length=100, blank=True, null=True)
     uf_logradouro = models.CharField(max_length=2, blank=True, null=True)
     municipio_logradouro = models.CharField(max_length=100, blank=True, null=True)
-    rg_cliente = models.CharField(max_length=20, blank=True)
     data_nasc_cliente = models.DateField(blank=True, null=True)
     cep_cliente = models.CharField(max_length=9, blank=True)
+    email_cliente = models.CharField(max_length=80, blank=True)
     observacao_cliente = models.TextField(blank=True, null=True)
 
 

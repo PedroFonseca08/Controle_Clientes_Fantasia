@@ -1,3 +1,34 @@
+function excluirCliente(event) {
+    // Previne o comportamento padrão do botão
+    event.preventDefault();
+
+    // Obtém o ID do cliente a partir do atributo data-cliente-id
+    const clienteId = event.target.getAttribute('data-cliente-id');
+
+    // Confirmação de exclusão
+    const confirmacao = confirm("Tem certeza que deseja excluir este cliente?");
+    if (!confirmacao) {
+        return;
+    }
+
+    // Faz uma requisição para o servidor para excluir o cliente
+    fetch(`/controle/clientes/deletar/${clienteId}/`)
+    .then(response => {
+        if (response.ok) {
+            event.target.closest('tr').remove();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.message || "Erro ao excluir o cliente.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert("Erro ao excluir o cliente: " + error.message);
+    });
+}
+
+
 document.getElementById('table-search').addEventListener('input', function() {
     var searchText = this.value.toLowerCase();
 
@@ -18,9 +49,9 @@ let currentClientId = null;
 
 document.addEventListener("DOMContentLoaded", function() {
 
-const editarButtons = document.querySelectorAll('[data-modal-target="editar-modal"]');
+const selecionarButtons = document.querySelectorAll('[data-modal-target="editar-modal"]');
 
-editarButtons.forEach(button => {
+selecionarButtons.forEach(button => {
     button.addEventListener("click", function() {
         const clienteId = button.dataset.clienteId;
         currentClientId = clienteId
@@ -36,7 +67,7 @@ editarButtons.forEach(button => {
                 document.getElementById('nome_edit').value = data.nome;
                 document.getElementById('cpf_edit').value = data.cpf;
                 document.getElementById('telefone_edit').value = data.telefone;
-                document.getElementById('rg_edit').value = data.rg;
+                document.getElementById('telefone2_edit').value = data.telefone2;
                 document.getElementById('cep_edit').value = data.cep;
                 document.getElementById('logradouro_edit').value = data.logradouro;
                 document.getElementById('num_logradouro_edit').value = data.num_logradouro;
@@ -45,6 +76,7 @@ editarButtons.forEach(button => {
                 document.getElementById('uf_logradouro_edit').value = data.uf_logradouro;
                 document.getElementById('municipio_logradouro_edit').value = data.municipio_logradouro;
                 document.getElementById('data_nasc_edit').value = data.data_nasc;
+                document.getElementById('email_edit').value = data.email;
                 document.getElementById('observacao_edit').value = data.observacao;
             })
             .catch(error => {
@@ -54,6 +86,46 @@ editarButtons.forEach(button => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+
+    const selecionarButtons = document.querySelectorAll('[data-modal-target="info-modal"]');
+    
+    selecionarButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const clienteId = button.dataset.clienteId;
+            currentClientId = clienteId
+            console.log("oi")
+            fetch(`/controle/clientes/${clienteId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao obter os dados do cliente');
+                    }
+                    return response.json();
+                })
+                .then(
+                    data => {
+                    document.getElementById('nome_info').value = data.nome;
+                    document.getElementById('cpf_info').value = data.cpf;
+                    document.getElementById('telefone_info').value = data.telefone;
+                    document.getElementById('telefone2_info').value = data.telefone2;
+                    document.getElementById('cep_info').value = data.cep;
+                    document.getElementById('logradouro_info').value = data.logradouro;
+                    document.getElementById('num_logradouro_info').value = data.num_logradouro;
+                    document.getElementById('complemento_logradouro_info').value = data.complemento_logradouro;
+                    document.getElementById('bairro_logradouro_info').value = data.bairro_logradouro;
+                    document.getElementById('uf_logradouro_info').value = data.uf_logradouro;
+                    document.getElementById('municipio_logradouro_info').value = data.municipio_logradouro;
+                    document.getElementById('data_nasc_info').value = data.data_nasc;
+                    document.getElementById('email_info').value = data.email;
+                    document.getElementById('observacao_info').value = data.observacao;
+                })
+                .catch(error => {
+                    console.error('Erro ao obter os dados do cliente:', error.message);
+                });
+            });
+        });
+    });
+    
 
 function editarCliente() {
 
@@ -84,6 +156,8 @@ function editarCliente() {
 document.addEventListener('DOMContentLoaded', function () {
     var telInput = document.getElementById('telefone');
     var telEditInput = document.getElementById('telefone_edit');
+    var tel2Input = document.getElementById('telefone2');
+    var tel2EditInput = document.getElementById('telefone2_edit');
     var maxChars = 14; // Defina o número máximo de caracteres
 
     // Função para formatar o telefone
@@ -114,6 +188,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Aplica a formatação ao campo de edição de telefone (tel-edit)
     telEditInput.addEventListener('input', function () {
         telEditInput.value = formatTel(telEditInput.value.replace(/\D/g, ''));
+    });
+    // Aplica a formatação ao campo telefone
+    tel2Input.addEventListener('input', function () {
+        tel2Input.value = formatTel(tel2Input.value.replace(/\D/g, ''));
+    });
+
+    // Aplica a formatação ao campo de edição de telefone (tel-edit)
+    tel2EditInput.addEventListener('input', function () {
+        tel2EditInput.value = formatTel(tel2EditInput.value.replace(/\D/g, ''));
     });
 });
 

@@ -94,7 +94,7 @@ def clientes(request):
             nome_cliente=request.POST.get('nome'),
             cpf_cliente=request.POST.get('cpf'),
             tel_cliente=request.POST.get('telefone'),
-            rg_cliente=request.POST.get('rg'),
+            tel2_cliente=request.POST.get('telefone2'),
             cep_cliente=request.POST.get('cep'),
             logradouro_cliente=request.POST.get('logradouro'),
             num_logradouro=request.POST.get('num_logradouro'),
@@ -103,6 +103,7 @@ def clientes(request):
             uf_logradouro=request.POST.get('uf_logradouro'),
             municipio_logradouro=request.POST.get('municipio_logradouro'), 
             data_nasc_cliente=request.POST.get('data_nasc') or None,
+            email_cliente=request.POST.get('email'),
             observacao_cliente=request.POST.get('observacao'),
         )
         novo_cliente.save()
@@ -124,15 +125,16 @@ def detalhes_cliente(request, id_cliente):
             'nome': cliente.nome_cliente,
             'cpf': cliente.cpf_cliente,
             'telefone': cliente.tel_cliente,
+            'telefone2': cliente.tel2_cliente,
             'logradouro': cliente.logradouro_cliente,
             'num_logradouro': cliente.num_logradouro,
             'complemento_logradouro': cliente.complemento_logradouro,
             'bairro_logradouro': cliente.bairro_logradouro,
             'uf_logradouro': cliente.uf_logradouro,
             'municipio_logradouro': cliente.municipio_logradouro,
-            'rg': cliente.rg_cliente,
             'data_nasc': cliente.data_nasc_cliente.strftime('%Y-%m-%d') if cliente.data_nasc_cliente else None,
             'cep': cliente.cep_cliente,
+            'email': cliente.email_cliente,
             'observacao': cliente.observacao_cliente,
         }
         return JsonResponse(cliente_data)
@@ -150,7 +152,7 @@ def editar_cliente(request, id_cliente):
         cliente.nome_cliente = request.POST.get('nome_edit')
         cliente.cpf_cliente = request.POST.get('cpf_edit')
         cliente.tel_cliente = request.POST.get('telefone_edit')
-        cliente.rg_cliente = request.POST.get('rg_edit')
+        cliente.tel2_cliente = request.POST.get('telefone2_edit')
         cliente.cep_cliente = request.POST.get('cep_edit')
         cliente.logradouro_cliente = request.POST.get('logradouro_edit')
         cliente.num_logradouro = request.POST.get('num_logradouro_edit')
@@ -159,6 +161,7 @@ def editar_cliente(request, id_cliente):
         cliente.uf_logradouro = request.POST.get('uf_logradouro_edit')
         cliente.municipio_logradouro = request.POST.get('municipio_logradouro_edit')
         cliente.data_nasc_cliente = request.POST.get('data_nasc_edit') or None
+        cliente.email_cliente = request.POST.get('email_edit')
         cliente.observacao_cliente = request.POST.get('observacao_edit')
 
         cliente.save()
@@ -233,3 +236,18 @@ def editar_fantasia_cliente(request, id_cliente_fantasia):
     }
 
     return render(request, 'historico.html', context)
+
+@login_required(login_url="/controle/login")
+def deletar_cliente(request, id_cliente):
+    
+    cliente_fantasia = get_object_or_404(Cliente, pk=id_cliente)
+
+    cliente_fantasia.delete()
+    
+    clientes = Cliente.objects.all()
+
+    context = {
+        'clientes': clientes
+    }
+
+    return render(request, 'clientes.html', context)

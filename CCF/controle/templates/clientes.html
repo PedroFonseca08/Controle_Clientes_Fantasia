@@ -33,6 +33,12 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +50,17 @@
                             <td class="px-6 py-4">
                                 {{ cliente.tel_cliente }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" data-modal-target="info-modal" data-modal-toggle="info-modal" class="font-medium text-blue-600 hover:underline">Informações</button>
+                            </td>
+                            <td class="px-2 py-4">
                                 <button data-cliente-id="{{ cliente.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Editar</button>
+                            </td>
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Fantasias</button>
+                            </td>
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirCliente(event)">Excluir</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -93,8 +108,8 @@
                         <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="" onblur="validateTel('telefone')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
-                        <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
-                        <input type="text" name="rg" id="rg" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o RG do cliente...(opcional)" onblur="validateRG('rg')">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Telefone Secundário</label>
+                        <input type="text" name="telefone2" id="telefone2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente...(opcional)" onblur="validateTel('telefone2')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
@@ -116,17 +131,21 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
                         <input type="text" name="bairro_logradouro" id="bairro_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o bairro... (opcional)" onblur="validateBairro('bairro_logradouro')">
                     </div>
-                    <div class="col-span-6 sm:col-span-2">
+                    <div class="col-span-6 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
                         <input type="text" name="uf_logradouro" id="uf_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Estado... (opcional)" onblur="validateUF('uf_logradouro')">
                     </div>
-                    <div class="col-span-6 sm:col-span-2">
+                    <div class="col-span-6 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
                         <input type="text" name="municipio_logradouro" id="municipio_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Município... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
                         <input type="date" name="data_nasc" id="data_nasc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                        <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Email... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
                     </div>
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
@@ -178,8 +197,8 @@
                         <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateTel('telefone_edit')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
-                        <label class="block mb-2 text-sm font-medium text-gray-900">RG</label>
-                        <input type="text" name="rg_edit" id="rg_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateRG('rg_edit')">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Telefone Secundário</label>
+                        <input type="text" name="telefone2_edit" id="telefone2_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateRG('rg_edit')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
@@ -201,17 +220,21 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
                         <input type="text" name="bairro_logradouro_edit" id="bairro_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateBairro('bairro_logradouro_edit')">
                     </div>
-                    <div class="col-span-6 sm:col-span-2">
+                    <div class="col-span-6 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
                         <input type="text" name="uf_logradouro_edit" id="uf_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateUF('uf_logradouro_edit')">
                     </div>
-                    <div class="col-span-6 sm:col-span-2">
+                    <div class="col-span-6 sm:col-span-1">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
                         <input type="text" name="municipio_logradouro_edit" id="municipio_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
                         <input type="date" name="data_nasc_edit" id="data_nasc_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                        <input type="text" name="email_edit" id="email_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
                     </div>
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
@@ -222,6 +245,90 @@
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                         Confirmar Alterações
                     </button>
+                </form>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Info modal -->
+    <div id="info-modal" data-modal-backdrop="static" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-3/5 max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 border-b rounded-t">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        Informações Cliente
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="info-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form 
+                class="p-4 md:p-5"
+                >
+                    {% csrf_token %}
+                    <div class="grid gap-4 mb-4 grid-cols-6">
+                        <div class="col-span-6">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
+                            <input type="text" name="nome_info" id="nome_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">CPF/CNPJ</label>
+                            <input type="text" name="cpf_info" id="cpf_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
+                        <input type="text" name="telefone_info" id="telefone_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Telefone Secundário</label>
+                        <input type="text" name="telefone2_info" id="telefone2_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
+                        <input type="text" name="cep_info" id="cep_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-4">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
+                        <input type="text" name="logradouro_info" id="logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
+                        <input type="text" name="num_logradouro_info" id="num_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
+                        <input type="text" name="complemento_logradouro_info" id="complemento_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
+                        <input type="text" name="bairro_logradouro_info" id="bairro_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
+                        <input type="text" name="uf_logradouro_info" id="uf_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
+                        <input type="text" name="municipio_logradouro_info" id="municipio_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
+                        <input type="date" name="data_nasc_info" id="data_nasc_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                        <input type="text" name="email_info" id="email_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    </div>
+                        <div class="col-span-6">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
+                            <textarea name="observacao_info" id="observacao_info" rows="1" readonly class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>                    
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
