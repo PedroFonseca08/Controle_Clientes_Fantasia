@@ -1,3 +1,182 @@
+document.addEventListener("DOMContentLoaded", function() {
+
+const fantasiaButtons = document.querySelectorAll('[data-modal-target="fantasia-modal"]');
+
+fantasiaButtons.forEach(button => {
+    button.addEventListener("click", function() {
+        const clienteId = this.getAttribute('data-cliente-id');
+
+        console.log(clienteId)
+        
+        currentClientId = clienteId
+
+        fetch(`/controle/clientes/${clienteId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao obter os dados do cliente fantasia');
+                }
+                toggleDataFim();
+                return response.json();
+            })
+            .then(
+                data => {
+                document.getElementById('nomeCF').value = data.nome;
+            })
+            .catch(error => {
+                console.error('Erro ao obter os dados do cliente:', error.message);
+            });
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const fantasiaButtons = document.querySelectorAll('[data-modal-target="fantasia-modal"]');
+
+    fantasiaButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const clienteId = this.getAttribute('data-cliente-id');
+
+            fetch(`/controle/clientes/historico/${clienteId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao obter os dados do cliente fantasia');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tbody = document.getElementById('fantasias-table-body');
+                    tbody.innerHTML = '';
+
+                    data.sort((a, b) => {
+                        // Converta as datas para objetos Date para poder compará-las
+                        const dateA = new Date(a.data_inicio_fantasia);
+                        const dateB = new Date(b.data_inicio_fantasia);
+                        
+                        // Compare as datas
+                        return dateB - dateA;
+                    }).forEach(fantasia => {
+                        const row = document.createElement('tr');
+                        row.className = 'bg-white border-b';
+                    
+                        const fantasiaCell = document.createElement('td');
+                        fantasiaCell.className = 'px-6 py-4';
+                        fantasiaCell.textContent = fantasia.fantasia;
+                    
+                        const precoFantasiaCell = document.createElement('td');
+                        precoFantasiaCell.className = 'px-6 py-4';
+                        precoFantasiaCell.textContent = fantasia.preco_fantasia;
+                    
+                        const tipoFantasiaCell = document.createElement('td');
+                        tipoFantasiaCell.className = 'px-6 py-4';
+                        tipoFantasiaCell.textContent = fantasia.tipo_fantasia == 'C' ? 'Compra' : 'Aluguel';
+                    
+                        const dataIFantasiaCell = document.createElement('td');
+                        dataIFantasiaCell.className = 'px-6 py-4';
+                        dataIFantasiaCell.textContent = formatDate(fantasia.data_inicio_fantasia);
+                    
+                        const dataFFantasiaCell = document.createElement('td');
+                        dataFFantasiaCell.className = 'px-6 py-4';
+                        dataFFantasiaCell.textContent = fantasia.tipo_fantasia != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+                    
+                        const baixaFantasiaCell = document.createElement('td');
+                        baixaFantasiaCell.className = 'px-6 py-4';
+                        baixaFantasiaCell.textContent = fantasia.baixa_fantasia;
+                    
+                        row.appendChild(fantasiaCell);
+                        row.appendChild(precoFantasiaCell);
+                        row.appendChild(tipoFantasiaCell);
+                        row.appendChild(dataIFantasiaCell);
+                        row.appendChild(dataFFantasiaCell);
+                        row.appendChild(baixaFantasiaCell);
+                    
+                        tbody.appendChild(row);
+                    });
+                    
+                })
+                .catch(error => {
+                    console.error('Erro ao obter os dados do cliente:', error.message);
+                });
+        });
+    });
+});
+
+
+function adicionarTransacao() {
+    const clienteId = currentClientId;
+
+    const formData = new FormData(document.getElementById('fantasia-form'));
+
+    fetch(`/controle/clientes/historico/${clienteId}/`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar a fantasia do cliente');
+        }
+        return response.json(); 
+    })
+    .then(data => {
+        document.getElementById('fantasia-form').reset();
+
+        const tbody = document.getElementById('fantasias-table-body');
+        tbody.innerHTML = ''; 
+
+        data.sort((a, b) => {
+            // Converta as datas para objetos Date para poder compará-las
+            const dateA = new Date(a.data_inicio_fantasia);
+            const dateB = new Date(b.data_inicio_fantasia);
+            
+            // Compare as datas
+            return dateB - dateA;
+        }).forEach(fantasia => {
+            const row = document.createElement('tr');
+            row.className = 'bg-white border-b';
+        
+            const fantasiaCell = document.createElement('td');
+            fantasiaCell.className = 'px-6 py-4';
+            fantasiaCell.textContent = fantasia.fantasia;
+        
+            const precoFantasiaCell = document.createElement('td');
+            precoFantasiaCell.className = 'px-6 py-4';
+            precoFantasiaCell.textContent = fantasia.preco_fantasia;
+        
+            const tipoFantasiaCell = document.createElement('td');
+            tipoFantasiaCell.className = 'px-6 py-4';
+            tipoFantasiaCell.textContent = fantasia.tipo_fantasia == 'C' ? 'Compra' : 'Aluguel';
+        
+            const dataIFantasiaCell = document.createElement('td');
+            dataIFantasiaCell.className = 'px-6 py-4';
+            dataIFantasiaCell.textContent = formatDate(fantasia.data_inicio_fantasia);
+        
+            const dataFFantasiaCell = document.createElement('td');
+            dataFFantasiaCell.className = 'px-6 py-4';
+            dataFFantasiaCell.textContent = fantasia.tipo_fantasia != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+        
+            const baixaFantasiaCell = document.createElement('td');
+            baixaFantasiaCell.className = 'px-6 py-4';
+            baixaFantasiaCell.textContent = fantasia.baixa_fantasia;
+        
+            row.appendChild(fantasiaCell);
+            row.appendChild(precoFantasiaCell);
+            row.appendChild(tipoFantasiaCell);
+            row.appendChild(dataIFantasiaCell);
+            row.appendChild(dataFFantasiaCell);
+            row.appendChild(baixaFantasiaCell);
+        
+            tbody.appendChild(row);
+        });
+        
+
+
+    })
+    .catch(error => {
+        console.error('Erro ao adicionar a fantasia do cliente:', error.message);
+    });
+}
+
+
 function excluirCliente(event) {
     // Previne o comportamento padrão do botão
     event.preventDefault();
@@ -150,9 +329,6 @@ function editarCliente() {
 }
 
 
-
-// ADAPTAR
-
 document.addEventListener('DOMContentLoaded', function () {
     var telInput = document.getElementById('telefone');
     var telEditInput = document.getElementById('telefone_edit');
@@ -271,34 +447,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function validateCPF(inputId) {
-    var cpfInput = document.getElementById(inputId);
-    var cpfValue = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-
-    if (cpfValue.length !== 11 && cpfValue.length !== 14 || isNaN(cpfValue)) {
-        alert('CPF deve conter 11 dígitos numéricos ou CNPJ deve conter 14 dígitos numéricos.');
-        cpfInput.value = ''; // Limpa o campo
-    }
-}
-
-function validateRG(inputId) {
-    var rgInput = document.getElementById(inputId);
-
-    if (rgInput.value.length > 20) {
-        rgInput.value = '';
-        alert('O RG deve ter 20 dígitos no máximo.');
-    }
-}
-
-function validateTel(inputId) {
-    var telInput = document.getElementById(inputId);
-    var telValue = telInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-
-    if (telValue.length !== 11) {
-        alert('Por favor, insira um número de telefone válido com 11 caracteres.');
-        telInput.value = '';
-    }
-}
 
 function validateCep(inputId, funcao) {
     var cepInput = document.getElementById(inputId);
@@ -336,74 +484,19 @@ function validateCep(inputId, funcao) {
         });
 }
 
-function validateLogradouro(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 150) {
-        endInput.value = '';
-        alert('O logradouro deve ter 150 caracteres no máximo.');
+function toggleDataFim() {
+    const tipoFantasia = document.getElementById('tipo_fantasia').value;
+    const dataFimContainer = document.getElementById('data_fim_fantasia_div');
+    
+    if (tipoFantasia === 'C') {
+        dataFimContainer.style.display = 'none';
+    } else {
+        dataFimContainer.style.display = 'block';
     }
 }
 
-function validateNumLogradouro(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 15) {
-        endInput.value = '';
-        alert('O número do logradouro deve ter 15 caracteres no máximo.');
-    }
-}
-
-function validateComplemento(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 100) {
-        endInput.value = '';
-        alert('O complemento deve ter 100 caracteres no máximo.');
-    }
-}
-
-function validateBairro(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 100) {
-        endInput.value = '';
-        alert('O bairro deve ter 100 caracteres no máximo.');
-    }
-}
-
-function validateUF(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 2) {
-        endInput.value = '';
-        alert('O Estado deve ter 2 caracteres no máximo.');
-    }
-}
-
-function validateMunicipio(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 100) {
-        endInput.value = '';
-        alert('O Município deve ter 100 caracteres no máximo.');
-    }
-}
-
-function validateObs(inputId) {
-    var obsInput = document.getElementById(inputId);
-
-    if (obsInput.value.length > 200) {
-        obsInput.value = '';
-        alert('A observação deve ter 200 caracteres no máximo.');
-    }
-}
-
-function validateNome(inputId) {
-    var nomeInput = document.getElementById(inputId);
-
-    if (nomeInput.value.length > 100) {
-        nomeInput.value = '';
-        alert('O nome deve ter 100 caracteres no máximo.');
-    }
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', options);
 }

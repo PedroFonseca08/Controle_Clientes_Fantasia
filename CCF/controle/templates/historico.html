@@ -30,6 +30,8 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +48,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 <button data-fantasia-cliente-id="{{ clienteFantasia.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Editar</button>
+                            </td>
+                            <td class="px-6 py-4">
+                                <button data-fantasia-cliente-id="{{ clienteFantasia.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirClienteFantasia(event)">Excluir</button>
                             </td>
                         </tr>
                         {% endfor %}

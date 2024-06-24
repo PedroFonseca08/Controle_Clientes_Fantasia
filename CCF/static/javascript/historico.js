@@ -1,3 +1,34 @@
+function excluirClienteFantasia(event) {
+    // Previne o comportamento padrão do botão
+    event.preventDefault();
+
+    // Obtém o ID do cliente a partir do atributo data-cliente-id
+    const fantasiaClienteId = event.target.getAttribute('data-fantasia-cliente-id');
+
+    // Confirmação de exclusão
+    const confirmacao = confirm("Tem certeza que deseja excluir esta transação?");
+    if (!confirmacao) {
+        return;
+    }
+
+    // Faz uma requisição para o servidor para excluir o cliente
+    fetch(`/controle/historico/deletar/${fantasiaClienteId}/`)
+    .then(response => {
+        if (response.ok) {
+            console.log("oi")
+            event.target.closest('tr').remove();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.message || "Erro ao excluir a transação.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert("Erro ao excluir a transação: " + error.message);
+    });
+}
+
 function toggleDataFim() {
     const tipoFantasia = document.getElementById('tipo_fantasia').value;
     const dataFimContainer = document.getElementById('data_fim_fantasia_div');

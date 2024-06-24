@@ -57,7 +57,7 @@
                                 <button data-cliente-id="{{ cliente.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Editar</button>
                             </td>
                             <td class="px-2 py-4">
-                                <button data-cliente-id="{{ cliente.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Fantasias</button>
+                                <button id="add-fantasias" data-cliente-id="{{ cliente.id }}" data-modal-target="fantasia-modal" data-modal-toggle="fantasia-modal" class="font-medium text-blue-600 hover:underline">Fantasias</button>
                             </td>
                             <td class="px-2 py-4">
                                 <button data-cliente-id="{{ cliente.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirCliente(event)">Excluir</button>
@@ -97,47 +97,47 @@
                     <div class="grid gap-4 mb-4 grid-cols-6">
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
-                            <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o nome do cliente..." required="" onblur="validateNome('nome')">
+                            <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o nome do cliente..." required="" maxlength="100">
                         </div>
                         <div class="col-span-6 sm:col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">CPF/CNPJ</label>
-                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CPF do cliente..." required="" onblur="validateCPF('cpf')">
+                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CPF do cliente..." required="" maxlength="18">
                         </div>
                         <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
-                        <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="" onblur="validateTel('telefone')">
+                        <input type="text" name="telefone" id="telefone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente..." required="" maxlength="14">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone Secundário</label>
-                        <input type="text" name="telefone2" id="telefone2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente...(opcional)" onblur="validateTel('telefone2')">
+                        <input type="text" name="telefone2" id="telefone2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o telefone do cliente...(opcional)" maxlength="14">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
                         <input type="text" name="cep" id="cep" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o CEP do cliente... (opcional)" onblur="validateCep('cep', 'C')">
                     </div>
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
-                        <input type="text" name="logradouro" id="logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o logradouro do cliente..." required="" onblur="validateLogradouro('logradouro')">
+                        <input type="text" name="logradouro" id="logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o logradouro do cliente..." required="" maxlength="150">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
-                        <input type="text" name="num_logradouro" id="num_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o número..." required="" onblur="validateNumLogradouro('num_logradouro')">
+                        <input type="text" name="num_logradouro" id="num_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o número..." required="" maxlength="15">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
-                        <input type="text" name="complemento_logradouro" id="complemento_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o complemento... (opcional)" onblur="validateComplemento('complemento_logradouro')">
+                        <input type="text" name="complemento_logradouro" id="complemento_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o complemento... (opcional)" maxlength="80">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
-                        <input type="text" name="bairro_logradouro" id="bairro_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o bairro... (opcional)" onblur="validateBairro('bairro_logradouro')">
+                        <input type="text" name="bairro_logradouro" id="bairro_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o bairro... (opcional)" maxlength="80">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
-                        <input type="text" name="uf_logradouro" id="uf_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Estado... (opcional)" onblur="validateUF('uf_logradouro')">
+                        <input type="text" name="uf_logradouro" id="uf_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Estado... (opcional)" maxlength="2">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
-                        <input type="text" name="municipio_logradouro" id="municipio_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Município... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
+                        <input type="text" name="municipio_logradouro" id="municipio_logradouro" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Município... (opcional)" maxlength="80">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -145,11 +145,11 @@
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                        <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Email... (opcional)" onblur="validateMunicipio('municipio_logradouro')">
+                        <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o Email... (opcional)" maxlength="80">
                     </div>
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea name="observacao" id="observacao" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)" onblur="validateObs('observacao')"></textarea>                    
+                            <textarea name="observacao" id="observacao" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Escreva alguma observação do cliente... (opcional)"></textarea>                    
                         </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -186,47 +186,47 @@
                     <div class="grid gap-4 mb-4 grid-cols-6">
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
-                            <input type="text" name="nome_edit" id="nome_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNome('nome_edit')">
+                            <input type="text" name="nome_edit" id="nome_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" maxlength="100">
                         </div>
                         <div class="col-span-6 sm:col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">CPF/CNPJ</label>
-                            <input type="text" name="cpf_edit" id="cpf_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateCPF('cpf_edit')">
+                            <input type="text" name="cpf_edit" id="cpf_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" maxlength="18">
                         </div>
                         <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone</label>
-                        <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateTel('telefone_edit')">
+                        <input type="text" name="telefone_edit" id="telefone_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" maxlength="14" minlength="14">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Telefone Secundário</label>
-                        <input type="text" name="telefone2_edit" id="telefone2_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateRG('rg_edit')">
+                        <input type="text" name="telefone2_edit" id="telefone2_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="14">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
                         <input type="text" name="cep_edit" id="cep_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateCep('cep_edit', 'E')">
                     </div>
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
-                        <input type="text" name="logradouro_edit" id="logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateLogradouro('logradouro_edit')">
+                        <input type="text" name="logradouro_edit" id="logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" maxlength="150">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Número</label>
-                        <input type="text" name="num_logradouro_edit" id="num_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onblur="validateNumLogradouro('num_logradouro_edit')">
+                        <input type="text" name="num_logradouro_edit" id="num_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" maxlength="15">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Complemento</label>
-                        <input type="text" name="complemento_logradouro_edit" id="complemento_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateComplemento('complemento_logradouro_edit')">
+                        <input type="text" name="complemento_logradouro_edit" id="complemento_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="80">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
-                        <input type="text" name="bairro_logradouro_edit" id="bairro_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateBairro('bairro_logradouro_edit')">
+                        <input type="text" name="bairro_logradouro_edit" id="bairro_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="80">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
-                        <input type="text" name="uf_logradouro_edit" id="uf_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateUF('uf_logradouro_edit')">
+                        <input type="text" name="uf_logradouro_edit" id="uf_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="2">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
-                        <input type="text" name="municipio_logradouro_edit" id="municipio_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
+                        <input type="text" name="municipio_logradouro_edit" id="municipio_logradouro_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="80">
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Nascimento</label>
@@ -234,11 +234,11 @@
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                        <input type="text" name="email_edit" id="email_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onblur="validateMunicipio('municipio_logradouro_edit')">
+                        <input type="text" name="email_edit" id="email_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" maxlength="80">
                     </div>
                         <div class="col-span-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Observação do cliente</label>
-                            <textarea name="observacao_edit" id="observacao_edit" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" onblur="validateObs('observacao_edit')"></textarea>                    
+                            <textarea name="observacao_edit" id="observacao_edit" rows="1" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>                    
                         </div>
                     </div>
                     <button type="button" onclick="editarCliente()" data-modal-toggle="editar-modal" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -292,7 +292,7 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">CEP</label>
                         <input type="text" name="cep_info" id="cep_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Logradouro</label>
                         <input type="text" name="logradouro_info" id="logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
@@ -308,11 +308,11 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">Bairro</label>
                         <input type="text" name="bairro_logradouro_info" id="bairro_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">UF</label>
                         <input type="text" name="uf_logradouro_info" id="uf_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
-                    <div class="col-span-6 sm:col-span-1">
+                    <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Município</label>
                         <input type="text" name="municipio_logradouro_info" id="municipio_logradouro_info" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                     </div>
@@ -333,6 +333,96 @@
             </div>
         </div>
     </div> 
+
+
+    <!-- Fantasia modal -->
+    <div id="fantasia-modal" data-modal-backdrop="static" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-3/5 max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-4 rounded-t">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Fantasias do Cliente
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="fantasia-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-span-6 p-4 md:p-5">
+                    <label class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
+                    <input type="text" name="nomeCF" id="nomeCF" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" readonly>
+                </div>
+
+                <!-- Modal body -->
+                <form 
+                class="p-4 md:p-5"
+                id="fantasia-form"
+                >
+                    {% csrf_token %}
+                    <div class="grid gap-4 mb-4 grid-cols-6">
+                        
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Fantasia</label>
+                            <input type="text" name="fantasia" id="fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite a fantasia do cliente..." required="">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Preço da Fantasia</label>
+                            <input type="text" name="preco_fantasia" id="preco_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o preço da fantasia..." required="">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Tipo da Fantasia</label>
+                            <select name="tipo_fantasia" id="tipo_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onchange="toggleDataFim()">
+                                <option value="" disabled selected>Selecione o tipo da fantasia...</option>
+                                <option value="A">Aluguel</option>
+                                <option value="C">Compra</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-6">
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Data de Início</label>
+                            <input type="date" name="data_inicio_fantasia" id="data_inicio_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2" id="data_fim_fantasia_div">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Data de Fim</label>
+                            <input type="date" name="data_fim_fantasia" id="data_fim_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="adicionarTransacao()" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        Adicionar Fantasia
+                    </button>
+                </form>
+                    
+                <div id="fantasias-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Fantasia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">Preço</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">Tipo Fantasia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">Data Início</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">Data Fim</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">Baixa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fantasias-table-body">
+
+                        </tbody>
+                    </table>
+                </div>                
+            </div>
+        </div>
+    </div>
+
 
 {% load static %}
 <script src="{% static 'javascript/clientes.js' %}"></script>

@@ -107,14 +107,17 @@ def clientes(request):
             observacao_cliente=request.POST.get('observacao'),
         )
         novo_cliente.save()
-    
+
+        return redirect('clientes')
+
     clientes = Cliente.objects.all()
 
     context = {
-        'clientes': clientes
+        'clientes': clientes,
     }
 
     return render(request, 'clientes.html', context)
+
 
 @login_required(login_url="/controle/login")
 def detalhes_cliente(request, id_cliente):
@@ -177,17 +180,9 @@ def editar_cliente(request, id_cliente):
 
 @login_required(login_url="/controle/login")
 def historico_view(request):
-
-    if request.method == 'POST':
-        novo_cliente_fantasia = ClienteFantasia(
-            cliente=request.POST.get('data_nasc'),
-            fantasia=request.POST.get('data_nasc'),
-            data_nasc_cliente=request.POST.get('data_nasc') or None,
-        )
-        novo_cliente_fantasia.save()
-    
+        
     clientesFantasia = ClienteFantasia.objects.all()
-
+    
     context = {
         'historico': clientesFantasia
     }
@@ -240,9 +235,9 @@ def editar_fantasia_cliente(request, id_cliente_fantasia):
 @login_required(login_url="/controle/login")
 def deletar_cliente(request, id_cliente):
     
-    cliente_fantasia = get_object_or_404(Cliente, pk=id_cliente)
+    cliente = get_object_or_404(Cliente, pk=id_cliente)
 
-    cliente_fantasia.delete()
+    cliente.delete()
     
     clientes = Cliente.objects.all()
 
@@ -251,3 +246,50 @@ def deletar_cliente(request, id_cliente):
     }
 
     return render(request, 'clientes.html', context)
+
+@login_required(login_url="/controle/login")
+def deletar_fantasia_cliente(request, id_cliente_fantasia):
+    
+    cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
+
+    cliente_fantasia.delete()
+    
+    clientesFantasia = ClienteFantasia.objects.all()
+
+    context = {
+        'historico': clientesFantasia
+    }
+
+    return render(request, 'historico.html', context)
+
+
+@login_required(login_url="/controle/login")
+def fantasias_cliente(request, id_cliente):
+    cliente = get_object_or_404(Cliente, pk=id_cliente)
+
+    if request.method == 'POST':
+        fantasia = request.POST.get('fantasia')
+        preco_fantasia = request.POST.get('preco_fantasia')
+        tipo_fantasia = request.POST.get('tipo_fantasia')
+        data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
+        
+        if tipo_fantasia == 'A':
+            data_fim_fantasia = request.POST.get('data_fim_fantasia')
+        else:
+            data_fim_fantasia = None
+        
+        novo_cliente_fantasia = ClienteFantasia(
+            cliente=cliente,
+            fantasia=fantasia,
+            preco_fantasia=preco_fantasia,
+            tipo_fantasia=tipo_fantasia,
+            data_inicio_fantasia=data_inicio_fantasia,
+            data_fim_fantasia=data_fim_fantasia
+        )
+        novo_cliente_fantasia.save()
+
+    cliente_fantasias = ClienteFantasia.objects.filter(cliente=cliente)
+
+    cliente_fantasias_data = list(cliente_fantasias.values())
+
+    return JsonResponse(cliente_fantasias_data, safe=False)
