@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Cliente, ClienteFantasia, Fantasia
+from .models import Cliente, ClienteFantasia, Fantasia, Tipo
 from PIL import Image
 
 @login_required(login_url="/controle/login")
@@ -64,26 +64,92 @@ def clientes_view(request):
 def fantasias_view(request):
     if request.method == "GET":
         # Pego todas as minhas fantasias do BD e mando pra minha página:
-        fantasias = Fantasia.objects.all().values()
+        # Quando eu passo os objetos em si para o template, consigo acessar os atributos da tabela da chave estrangeira.
+        # Existe outra forma de fazer isso? Era pra ser assim mesmo?
+        fantasias = Fantasia.objects.all()
+        tipos = Tipo.objects.all()
         context = {
-            'fantasias': fantasias
+            'fantasias': fantasias,
+            'tipos': tipos
         }
         return render(request, 'fantasias.html', context)
     else: # Será por método POST
 
         nome = request.POST.get('nome_fantasia')
-        qtdEstoque = request.POST.get('qtd_estoque')
-        observacao = request.POST.get('observacao')
-        file = request.FILES.get('img_fantasia')
-        
+        preco_aluguel = request.POST.get('preco_aluguel')
+        preco_venda = request.POST.get('preco_venda')
+        tipo_fantasia_id = request.POST.get('tipo_fantasia')
+        tipo_fantasia = get_object_or_404(Tipo, pk=tipo_fantasia_id)
+
+        #file = request.FILES.get('img_fantasia')
         #Para manipular a imagem tem que usar o Pilow ?
         #img = Image.open(file)
         #img.resize(512, 640)
+        #Fantasia(imagem_fantasia=file)
 
-        fantasia = Fantasia(nome_fantasia=nome, estoque_fantasia=qtdEstoque, imagem_fantasia=file, observacao_fantasia=observacao)
+        fantasia = Fantasia(nome_fantasia=nome, tipo_fantasia=tipo_fantasia, preco_venda=preco_venda, preco_aluguel=preco_aluguel)
         fantasia.save()
 
-        return HttpResponseRedirect(reverse('fantasias')) 
+        return HttpResponseRedirect(reverse('fantasias'))
+    
+@login_required(login_url="/controle/login")
+def detalhes_fantasia(request, id_fantasia):
+    try:
+        fantasia = get_object_or_404(Fantasia, pk=id_fantasia)
+        fantasia_data = {
+            'nome_fantasia': fantasia.nome_fantasia,
+            'tipo_fantasia': fantasia.tipo_fantasia.id, #estou usando o id do tipo como valor de referência no html
+            'preco_venda': fantasia.preco_venda,
+            'preco_aluguel': fantasia.preco_aluguel,
+        }
+        return JsonResponse(fantasia_data)
+    except Cliente.DoesNotExist:
+        return JsonResponse({'error': 'Fantasia não encontrada'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+@login_required(login_url="/controle/login")
+def editar_fantasia(request, id_fantasia):
+
+    fantasia = get_object_or_404(Fantasia, pk=id_fantasia)
+
+    if request.method == 'POST':
+        idTipo = request.POST.get('tipo_fantasia_edit')
+
+        tipoFantasia = get_object_or_404(Tipo, pk=idTipo)
+
+        fantasia.nome_fantasia = request.POST.get('nome_fantasia_edit')
+        fantasia.tipo_fantasia = tipoFantasia
+        fantasia.preco_aluguel = request.POST.get('preco_aluguel_edit')
+        fantasia.preco_venda = request.POST.get('preco_venda_edit')
+
+        fantasia.save()
+    
+    fantasias = Fantasia.objects.all()
+    tipos = Tipo.objects.all()
+
+    context = {
+        'fantasias' : fantasias,
+        'tipos' : tipos,
+    }
+
+    return render(request, 'fantasias.html', context)
+
+@login_required(login_url="/controle/login")
+def deletar_fantasia(request, id_fantasia):
+    
+    fantasia = get_object_or_404(Fantasia, pk=id_fantasia)
+
+    fantasia.delete()
+    
+    fantasias = Fantasia.objects.all()
+
+    context = {
+        'fantasias': fantasias
+    }
+
+    return render(request, 'fantasias.html', context)
+
 
 @login_required(login_url="/controle/login")
 def clientes(request):

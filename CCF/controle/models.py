@@ -19,13 +19,15 @@ class Cliente(models.Model):
     email_cliente = models.CharField(max_length=80, blank=True)
     observacao_cliente = models.TextField(blank=True, null=True)
 
+class Tipo(models.Model):
+    nome_tipo = models.CharField(max_length=60, unique=True, null=False)
 
 class Fantasia(models.Model):
     nome_fantasia = models.CharField(max_length=60)
-    estoque_fantasia = models.IntegerField(blank=True, null=True)
-    imagem_fantasia = models.ImageField(upload_to='imagens_fantasias/', blank=True, null=True)
-    observacao_fantasia = models.TextField(blank=True, null=True)
-
+    preco_venda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    preco_aluguel = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    tipo_fantasia = models.ForeignKey(Tipo, on_delete=models.CASCADE)
+    #imagem_fantasia = models.ImageField(upload_to='imagens_fantasias/', blank=True, null=True)
 
 class ClienteFantasia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -35,7 +37,3 @@ class ClienteFantasia(models.Model):
     data_fim_fantasia = models.DateField(blank=True, null=True)
     tipo_fantasia = models.CharField(max_length=1, null=False) 
     baixa_fantasia = models.CharField(max_length=1, null=False)    
-
-Cliente.fantasias = models.ManyToManyField(
-    Fantasia, through=ClienteFantasia, related_name='clientes'
-)
