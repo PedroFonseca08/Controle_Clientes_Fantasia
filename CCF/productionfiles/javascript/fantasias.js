@@ -1,18 +1,22 @@
 document.getElementById('costume-search').addEventListener('input', function() {
     var searchText = this.value.toLowerCase();
 
-    // Pego todas as divs dentro do catálogo
+    // Pego o corpo da tabela
     var rows = document.querySelectorAll('tbody tr');
 
-    // Para cada div eu pego o conteúdo textual:
+    // Pego apenas os nomes das fantasias
+    var nomesDeFantasias = document.querySelectorAll('tbody tr th');
+
+    // Para cada linha do corpo:
     for(var i=0; i < rows.length; i++) {
 
-        var nomeFantasia = rows[i].textContent.toLowerCase();
+        // pego apenas o nome da fantasia
+        var nomeFantasia = nomesDeFantasias[i].textContent.toLowerCase();
 
-        // Se incluir o texto eu deixo a mostra
+        // Se incluir o texto eu deixo a linha a mostra
         if (nomeFantasia.includes(searchText)) {
             rows[i].style.display = '';
-        } else { // Senão, eu oculto o item
+        } else { // Senão, eu oculto a linha
             rows[i].style.display = 'none';
         }
     }
