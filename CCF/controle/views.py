@@ -66,7 +66,9 @@ def fantasias_view(request):
         # Pego todas as minhas fantasias do BD e mando pra minha página:
         # Quando eu passo os objetos em si para o template, consigo acessar os atributos da tabela da chave estrangeira.
         # Existe outra forma de fazer isso? Era pra ser assim mesmo?
-        fantasias = Fantasia.objects.all()
+        sessao = request.user
+        
+        fantasias = Fantasia.objects.filter(usuario=sessao)
         tipos = Tipo.objects.all()
         context = {
             'fantasias': fantasias,
@@ -75,6 +77,7 @@ def fantasias_view(request):
         return render(request, 'fantasias.html', context)
     else: # Será por método POST
 
+        user = request.user
         nome = request.POST.get('nome_fantasia')
         preco_aluguel = request.POST.get('preco_aluguel')
         preco_venda = request.POST.get('preco_venda')
@@ -87,7 +90,7 @@ def fantasias_view(request):
         #img.resize(512, 640)
         #Fantasia(imagem_fantasia=file)
 
-        fantasia = Fantasia(nome_fantasia=nome, tipo_fantasia=tipo_fantasia, preco_venda=preco_venda, preco_aluguel=preco_aluguel)
+        fantasia = Fantasia(usuario=user, nome_fantasia=nome, tipo_fantasia=tipo_fantasia, preco_venda=preco_venda, preco_aluguel=preco_aluguel)
         fantasia.save()
 
         return HttpResponseRedirect(reverse('fantasias'))
@@ -125,7 +128,9 @@ def editar_fantasia(request, id_fantasia):
 
         fantasia.save()
     
-    fantasias = Fantasia.objects.all()
+    sessao = request.user
+        
+    fantasias = Fantasia.objects.filter(usuario=sessao)
     tipos = Tipo.objects.all()
 
     context = {
@@ -142,7 +147,9 @@ def deletar_fantasia(request, id_fantasia):
 
     fantasia.delete()
     
-    fantasias = Fantasia.objects.all()
+    sessao = request.user
+        
+    fantasias = Fantasia.objects.filter(usuario=sessao)
 
     context = {
         'fantasias': fantasias
@@ -154,9 +161,11 @@ def deletar_fantasia(request, id_fantasia):
 @login_required(login_url="/controle/login")
 def clientes(request):
 
+    sessao = request.user
+
     if request.method == 'POST':
         novo_cliente = Cliente(
-            usuario=request.user,
+            usuario=sessao,
             nome_cliente=request.POST.get('nome'),
             cpf_cliente=request.POST.get('cpf'),
             tel_cliente=request.POST.get('telefone'),
@@ -172,11 +181,12 @@ def clientes(request):
             email_cliente=request.POST.get('email'),
             observacao_cliente=request.POST.get('observacao'),
         )
+
         novo_cliente.save()
 
         return redirect('clientes')
 
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.filter(usuario=sessao)
 
     context = {
         'clientes': clientes,
@@ -215,6 +225,8 @@ def detalhes_cliente(request, id_cliente):
 @login_required(login_url="/controle/login")
 def editar_cliente(request, id_cliente):
     
+    sessao = request.user
+
     cliente = get_object_or_404(Cliente, pk=id_cliente)
 
     if request.method == 'POST':
@@ -235,7 +247,7 @@ def editar_cliente(request, id_cliente):
 
         cliente.save()
     
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.filter(usuario=sessao)
 
     context = {
         'clientes': clientes
@@ -246,8 +258,10 @@ def editar_cliente(request, id_cliente):
 
 @login_required(login_url="/controle/login")
 def historico_view(request):
-        
-    clientesFantasia = ClienteFantasia.objects.all()
+    
+    sessao = request.user
+
+    clientesFantasia = ClienteFantasia.objects.filter(cliente__usuario = sessao)
     
     context = {
         'historico': clientesFantasia
@@ -261,9 +275,10 @@ def detalhes_fantasia_cliente(request, id_cliente_fantasia):
         cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
         cliente_fantasia_data = {
             'nome': cliente_fantasia.cliente.nome_cliente,
-            'nome_fantasia': cliente_fantasia.fantasia,
+            # TO DO
+            'nome_fantasia': cliente_fantasia.fantasia.nome_fantasia,
             'preco_fantasia': cliente_fantasia.preco_fantasia,
-            'tipo_fantasia': cliente_fantasia.tipo_fantasia,
+            'tipo_transacao': cliente_fantasia.tipo_transacao,
             'data_inicio_fantasia': cliente_fantasia.data_inicio_fantasia,
             'data_fim_fantasia': cliente_fantasia.data_fim_fantasia.strftime('%Y-%m-%d') if cliente_fantasia.data_fim_fantasia else None,
         }
@@ -275,22 +290,24 @@ def detalhes_fantasia_cliente(request, id_cliente_fantasia):
     
 @login_required(login_url="/controle/login")
 def editar_fantasia_cliente(request, id_cliente_fantasia):
-    
+
     cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
 
     if request.method == 'POST':
         cliente_fantasia.fantasia = request.POST.get('fantasia')
         cliente_fantasia.preco_fantasia = request.POST.get('preco_fantasia')
-        cliente_fantasia.tipo_fantasia = request.POST.get('tipo_fantasia')
+        cliente_fantasia.tipo_transacao = request.POST.get('tipo_transacao')
         cliente_fantasia.data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
-        if cliente_fantasia.tipo_fantasia == 'A':
+        if cliente_fantasia.tipo_transacao == 'A':
             cliente_fantasia.data_fim_fantasia = request.POST.get('data_fim_fantasia')
         else:
             cliente_fantasia.data_fim_fantasia = None
 
         cliente_fantasia.save()
     
-    clientesFantasia = ClienteFantasia.objects.all()
+    sessao = request.user
+
+    clientesFantasia = ClienteFantasia.objects.filter(cliente__usuario = sessao)
 
     context = {
         'historico': clientesFantasia
@@ -301,11 +318,13 @@ def editar_fantasia_cliente(request, id_cliente_fantasia):
 @login_required(login_url="/controle/login")
 def deletar_cliente(request, id_cliente):
     
+    sessao = request.user;
+
     cliente = get_object_or_404(Cliente, pk=id_cliente)
 
     cliente.delete()
     
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.filter(usuario=sessao)
 
     context = {
         'clientes': clientes
@@ -320,7 +339,9 @@ def deletar_fantasia_cliente(request, id_cliente_fantasia):
 
     cliente_fantasia.delete()
     
-    clientesFantasia = ClienteFantasia.objects.all()
+    sessao = request.user
+
+    clientesFantasia = ClienteFantasia.objects.filter(cliente__usuario = sessao)
 
     context = {
         'historico': clientesFantasia
@@ -336,10 +357,10 @@ def fantasias_cliente(request, id_cliente):
     if request.method == 'POST':
         fantasia = request.POST.get('fantasia')
         preco_fantasia = request.POST.get('preco_fantasia')
-        tipo_fantasia = request.POST.get('tipo_fantasia')
+        tipo_transacao = request.POST.get('tipo_transacao')
         data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
         
-        if tipo_fantasia == 'A':
+        if tipo_transacao == 'A':
             data_fim_fantasia = request.POST.get('data_fim_fantasia')
         else:
             data_fim_fantasia = None
@@ -348,13 +369,15 @@ def fantasias_cliente(request, id_cliente):
             cliente=cliente,
             fantasia=fantasia,
             preco_fantasia=preco_fantasia,
-            tipo_fantasia=tipo_fantasia,
+            tipo_transacao=tipo_transacao,
             data_inicio_fantasia=data_inicio_fantasia,
             data_fim_fantasia=data_fim_fantasia
         )
         novo_cliente_fantasia.save()
 
-    cliente_fantasias = ClienteFantasia.objects.filter(cliente=cliente)
+    sessao = request.user
+
+    cliente_fantasias = ClienteFantasia.objects.filter(cliente__usuario = sessao)
 
     cliente_fantasias_data = list(cliente_fantasias.values())
 

@@ -30,7 +30,7 @@ function excluirClienteFantasia(event) {
 }
 
 function toggleDataFim() {
-    const tipoFantasia = document.getElementById('tipo_fantasia').value;
+    const tipoFantasia = document.getElementById('tipo_transacao').value;
     const dataFimContainer = document.getElementById('data_fim_fantasia_div');
     
     if (tipoFantasia === 'C') {
@@ -66,7 +66,7 @@ editarButtons.forEach(button => {
                 document.getElementById('nomeCF').value = data.nome;
                 document.getElementById('fantasia').value = data.nome_fantasia;
                 document.getElementById('preco_fantasia').value = data.preco_fantasia;
-                document.getElementById('tipo_fantasia').value = data.tipo_fantasia;
+                document.getElementById('tipo_transacao').value = data.tipo_transacao;
                 document.getElementById('data_inicio_fantasia').value = data.data_inicio_fantasia;
                 document.getElementById('data_fim_fantasia').value = data.data_fim_fantasia;
                 toggleDataFim();

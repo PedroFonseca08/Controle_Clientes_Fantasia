@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                         const tipoFantasiaCell = document.createElement('td');
                         tipoFantasiaCell.className = 'px-6 py-4';
-                        tipoFantasiaCell.textContent = fantasia.tipo_fantasia == 'C' ? 'Compra' : 'Aluguel';
+                        tipoFantasiaCell.textContent = fantasia.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
                     
                         const dataIFantasiaCell = document.createElement('td');
                         dataIFantasiaCell.className = 'px-6 py-4';
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                         const dataFFantasiaCell = document.createElement('td');
                         dataFFantasiaCell.className = 'px-6 py-4';
-                        dataFFantasiaCell.textContent = fantasia.tipo_fantasia != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+                        dataFFantasiaCell.textContent = fantasia.tipo_transacao != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
                     
                         const baixaFantasiaCell = document.createElement('td');
                         baixaFantasiaCell.className = 'px-6 py-4';
@@ -144,7 +144,7 @@ function adicionarTransacao() {
         
             const tipoFantasiaCell = document.createElement('td');
             tipoFantasiaCell.className = 'px-6 py-4';
-            tipoFantasiaCell.textContent = fantasia.tipo_fantasia == 'C' ? 'Compra' : 'Aluguel';
+            tipoFantasiaCell.textContent = fantasia.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
         
             const dataIFantasiaCell = document.createElement('td');
             dataIFantasiaCell.className = 'px-6 py-4';
@@ -152,7 +152,7 @@ function adicionarTransacao() {
         
             const dataFFantasiaCell = document.createElement('td');
             dataFFantasiaCell.className = 'px-6 py-4';
-            dataFFantasiaCell.textContent = fantasia.tipo_fantasia != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+            dataFFantasiaCell.textContent = fantasia.tipo_transacao != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
         
             const baixaFantasiaCell = document.createElement('td');
             baixaFantasiaCell.className = 'px-6 py-4';
@@ -485,7 +485,7 @@ function validateCep(inputId, funcao) {
 }
 
 function toggleDataFim() {
-    const tipoFantasia = document.getElementById('tipo_fantasia').value;
+    const tipoFantasia = document.getElementById('tipo_transacao').value;
     const dataFimContainer = document.getElementById('data_fim_fantasia_div');
     
     if (tipoFantasia === 'C') {
