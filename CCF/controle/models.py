@@ -20,6 +20,9 @@ class Cliente(models.Model):
     email_cliente = models.CharField(max_length=80, blank=True)
     observacao_cliente = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.nome_cliente}"
+
     class Meta:
         constraints = [
             UniqueConstraint(fields=['cpf_cliente', 'usuario'], name='unique_cliente_cpf_usuario')
@@ -28,12 +31,18 @@ class Cliente(models.Model):
 class Tipo(models.Model):
     nome_tipo = models.CharField(max_length=60, unique=True, null=False)
 
+    def __str__(self):
+        return f"{self.nome_tipo}"
+
 class Fantasia(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nome_fantasia = models.CharField(max_length=60, unique=True)
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     preco_aluguel = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     tipo_fantasia = models.ForeignKey(Tipo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.nome_fantasia}"
 
 class ClienteFantasia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -42,4 +51,7 @@ class ClienteFantasia(models.Model):
     data_inicio_fantasia = models.DateField()
     data_fim_fantasia = models.DateField(blank=True, null=True)
     tipo_transacao = models.CharField(max_length=1, null=False) 
-    baixa_fantasia = models.CharField(max_length=1, null=False)    
+    baixa_fantasia = models.CharField(max_length=1, null=False)
+
+    def __str__(self):                 # função adionada
+        return f"{self.cliente.nome_cliente} - {self.fantasia.nome_fantasia}"   
