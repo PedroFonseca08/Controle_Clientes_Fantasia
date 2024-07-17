@@ -10,5 +10,4 @@ urlpatterns = [
     path('', lambda request: redirect('controle/', permanent=True)),
 ]
 
-# Não sei se precisa:
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

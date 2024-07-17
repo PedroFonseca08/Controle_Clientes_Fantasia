@@ -8,7 +8,7 @@ class Cliente(models.Model):
     nome_cliente = models.CharField(max_length=100, null=False)
     cpf_cliente = models.CharField(max_length=18, null=False)
     tel_cliente = models.CharField(max_length=14, null=False)
-    tel2_cliente = models.CharField(max_length=14, null=True)
+    tel2_cliente = models.CharField(max_length=14, null=True, blank=True)
     logradouro_cliente = models.CharField(max_length=150, null=False)
     num_logradouro = models.CharField(max_length=15, null=False)
     complemento_logradouro = models.CharField(max_length=100, blank=True, null=True)
