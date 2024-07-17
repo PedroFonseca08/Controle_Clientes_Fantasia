@@ -99,3 +99,27 @@ function editarTransacao() {
         console.error('Erro ao editar o cliente fantasia:', error.message);
     });
 }
+
+document.getElementById('table-search').addEventListener('input', function() {
+    var searchText = this.value.toLowerCase();
+    
+    // Pego o corpo da tabela
+    var rows = document.querySelectorAll('tbody tr');
+
+    // Pego apenas os nomes das fantasias
+    var nomesDosClientes = document.querySelectorAll('tbody tr th');
+
+    // Para cada linha do corpo:
+    for(var i=0; i < rows.length; i++) {
+
+        // pego apenas o nome do cliente
+        var nomeCliente = nomesDosClientes[i].textContent.toLowerCase();
+
+        // Se incluir o texto eu deixo a linha a mostra
+        if (nomeCliente.includes(searchText)) {
+            rows[i].style.display = '';
+        } else { // Senão, eu oculto a linha
+            rows[i].style.display = 'none';
+        }
+    }
+});

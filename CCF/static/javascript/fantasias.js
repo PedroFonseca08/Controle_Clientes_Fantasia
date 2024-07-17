@@ -7,6 +7,8 @@ document.getElementById('costume-search').addEventListener('input', function() {
     // Pego apenas os nomes das fantasias
     var nomesDeFantasias = document.querySelectorAll('tbody tr th');
 
+    console.log('oi')
+
     // Para cada linha do corpo:
     for(var i=0; i < rows.length; i++) {
 
