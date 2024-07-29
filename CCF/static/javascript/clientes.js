@@ -5,8 +5,6 @@ const fantasiaButtons = document.querySelectorAll('[data-modal-target="fantasia-
 fantasiaButtons.forEach(button => {
     button.addEventListener("click", function() {
         const clienteId = this.getAttribute('data-cliente-id');
-
-        console.log(clienteId)
         
         currentClientId = clienteId
 
@@ -55,33 +53,35 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         // Compare as datas
                         return dateB - dateA;
-                    }).forEach(fantasia => {
+                    }).forEach(async transacao => {
                         const row = document.createElement('tr');
                         row.className = 'bg-white border-b';
-                    
+
+                        const nomeFantasia = await recuperarNomeFantasia(transacao.fantasia_id)
+
                         const fantasiaCell = document.createElement('td');
                         fantasiaCell.className = 'px-6 py-4';
-                        fantasiaCell.textContent = fantasia.fantasia;
+                        fantasiaCell.textContent = nomeFantasia;
                     
                         const precoFantasiaCell = document.createElement('td');
                         precoFantasiaCell.className = 'px-6 py-4';
-                        precoFantasiaCell.textContent = fantasia.preco_fantasia;
+                        precoFantasiaCell.textContent = transacao.preco_fantasia;
                     
                         const tipoFantasiaCell = document.createElement('td');
                         tipoFantasiaCell.className = 'px-6 py-4';
-                        tipoFantasiaCell.textContent = fantasia.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
+                        tipoFantasiaCell.textContent = transacao.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
                     
                         const dataIFantasiaCell = document.createElement('td');
                         dataIFantasiaCell.className = 'px-6 py-4';
-                        dataIFantasiaCell.textContent = formatDate(fantasia.data_inicio_fantasia);
+                        dataIFantasiaCell.textContent = formatDate(transacao.data_inicio_fantasia);
                     
                         const dataFFantasiaCell = document.createElement('td');
                         dataFFantasiaCell.className = 'px-6 py-4';
-                        dataFFantasiaCell.textContent = fantasia.tipo_transacao != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+                        dataFFantasiaCell.textContent = transacao.tipo_transacao != 'C' ? formatDate(transacao.data_fim_fantasia) : '';
                     
                         const baixaFantasiaCell = document.createElement('td');
                         baixaFantasiaCell.className = 'px-6 py-4';
-                        baixaFantasiaCell.textContent = fantasia.baixa_fantasia;
+                        baixaFantasiaCell.textContent = transacao.baixa_fantasia;
                     
                         row.appendChild(fantasiaCell);
                         row.appendChild(precoFantasiaCell);
@@ -101,6 +101,34 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+function inserirPrecoBase(){
+    const fantasiaId = document.getElementById('fantasia').value
+    fetch(`/controle/fantasias/${fantasiaId}/`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao recuperar dados da fantasia');
+        }
+        return response.json(); 
+    })
+    .then(dados => {
+
+        const precoContainer = document.getElementById('preco_fantasia')
+
+        // Já coloca o valor mais barato, para ter uma noção na hora de preencher a transação
+        precoContainer.value = dados.preco_aluguel;
+    })
+}
+
+async function recuperarNomeFantasia(fantasiaId) {
+    try {
+        const response = await fetch(`/controle/fantasias/${fantasiaId}/`);
+        const dados = await response.json();
+        const nomeFantasia = dados.nome_fantasia;
+        return nomeFantasia; // Retorna o valor para ser usado posteriormente
+    } catch (error) {
+        console.error('Erro ao recuperar nome da fantasia:', error);
+    }
+}
 
 function adicionarTransacao() {
     const clienteId = currentClientId;
@@ -121,7 +149,7 @@ function adicionarTransacao() {
         document.getElementById('fantasia-form').reset();
 
         const tbody = document.getElementById('fantasias-table-body');
-        tbody.innerHTML = ''; 
+        tbody.innerHTML = '';
 
         data.sort((a, b) => {
             // Converta as datas para objetos Date para poder compará-las
@@ -130,33 +158,36 @@ function adicionarTransacao() {
             
             // Compare as datas
             return dateB - dateA;
-        }).forEach(fantasia => {
+        }).forEach(async transacao => {
+
+            const nomeFantasia = await recuperarNomeFantasia(transacao.fantasia_id);
+
             const row = document.createElement('tr');
             row.className = 'bg-white border-b';
         
             const fantasiaCell = document.createElement('td');
             fantasiaCell.className = 'px-6 py-4';
-            fantasiaCell.textContent = fantasia.fantasia;
+            fantasiaCell.textContent = nomeFantasia;
         
             const precoFantasiaCell = document.createElement('td');
             precoFantasiaCell.className = 'px-6 py-4';
-            precoFantasiaCell.textContent = fantasia.preco_fantasia;
+            precoFantasiaCell.textContent = transacao.preco_fantasia;
         
             const tipoFantasiaCell = document.createElement('td');
             tipoFantasiaCell.className = 'px-6 py-4';
-            tipoFantasiaCell.textContent = fantasia.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
+            tipoFantasiaCell.textContent = transacao.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
         
             const dataIFantasiaCell = document.createElement('td');
             dataIFantasiaCell.className = 'px-6 py-4';
-            dataIFantasiaCell.textContent = formatDate(fantasia.data_inicio_fantasia);
+            dataIFantasiaCell.textContent = formatDate(transacao.data_inicio_fantasia);
         
             const dataFFantasiaCell = document.createElement('td');
             dataFFantasiaCell.className = 'px-6 py-4';
-            dataFFantasiaCell.textContent = fantasia.tipo_transacao != 'C' ? formatDate(fantasia.data_fim_fantasia) : '';
+            dataFFantasiaCell.textContent = transacao.tipo_transacao != 'C' ? formatDate(transacao.data_fim_fantasia) : '';
         
             const baixaFantasiaCell = document.createElement('td');
             baixaFantasiaCell.className = 'px-6 py-4';
-            baixaFantasiaCell.textContent = fantasia.baixa_fantasia;
+            baixaFantasiaCell.textContent = transacao.baixa_fantasia;
         
             row.appendChild(fantasiaCell);
             row.appendChild(precoFantasiaCell);
@@ -167,9 +198,6 @@ function adicionarTransacao() {
         
             tbody.appendChild(row);
         });
-        
-
-
     })
     .catch(error => {
         console.error('Erro ao adicionar a fantasia do cliente:', error.message);
@@ -273,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener("click", function() {
             const clienteId = button.dataset.clienteId;
             currentClientId = clienteId
-            console.log("oi")
             fetch(`/controle/clientes/${clienteId}/`)
                 .then(response => {
                     if (!response.ok) {

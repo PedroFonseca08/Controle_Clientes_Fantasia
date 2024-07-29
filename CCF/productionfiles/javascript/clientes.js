@@ -1,3 +1,241 @@
+document.addEventListener("DOMContentLoaded", function() {
+
+const fantasiaButtons = document.querySelectorAll('[data-modal-target="fantasia-modal"]');
+
+fantasiaButtons.forEach(button => {
+    button.addEventListener("click", function() {
+        const clienteId = this.getAttribute('data-cliente-id');
+        
+        currentClientId = clienteId
+
+        fetch(`/controle/clientes/${clienteId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao obter os dados do cliente fantasia');
+                }
+                toggleDataFim();
+                return response.json();
+            })
+            .then(
+                data => {
+                document.getElementById('nomeCF').value = data.nome;
+            })
+            .catch(error => {
+                console.error('Erro ao obter os dados do cliente:', error.message);
+            });
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const fantasiaButtons = document.querySelectorAll('[data-modal-target="fantasia-modal"]');
+
+    fantasiaButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const clienteId = this.getAttribute('data-cliente-id');
+
+            fetch(`/controle/clientes/historico/${clienteId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao obter os dados do cliente fantasia');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tbody = document.getElementById('fantasias-table-body');
+                    tbody.innerHTML = '';
+
+                    data.sort((a, b) => {
+                        // Converta as datas para objetos Date para poder compará-las
+                        const dateA = new Date(a.data_inicio_fantasia);
+                        const dateB = new Date(b.data_inicio_fantasia);
+                        
+                        // Compare as datas
+                        return dateB - dateA;
+                    }).forEach(async transacao => {
+                        const row = document.createElement('tr');
+                        row.className = 'bg-white border-b';
+
+                        const nomeFantasia = await recuperarNomeFantasia(transacao.fantasia_id)
+
+                        const fantasiaCell = document.createElement('td');
+                        fantasiaCell.className = 'px-6 py-4';
+                        fantasiaCell.textContent = nomeFantasia;
+                    
+                        const precoFantasiaCell = document.createElement('td');
+                        precoFantasiaCell.className = 'px-6 py-4';
+                        precoFantasiaCell.textContent = transacao.preco_fantasia;
+                    
+                        const tipoFantasiaCell = document.createElement('td');
+                        tipoFantasiaCell.className = 'px-6 py-4';
+                        tipoFantasiaCell.textContent = transacao.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
+                    
+                        const dataIFantasiaCell = document.createElement('td');
+                        dataIFantasiaCell.className = 'px-6 py-4';
+                        dataIFantasiaCell.textContent = formatDate(transacao.data_inicio_fantasia);
+                    
+                        const dataFFantasiaCell = document.createElement('td');
+                        dataFFantasiaCell.className = 'px-6 py-4';
+                        dataFFantasiaCell.textContent = transacao.tipo_transacao != 'C' ? formatDate(transacao.data_fim_fantasia) : '';
+                    
+                        const baixaFantasiaCell = document.createElement('td');
+                        baixaFantasiaCell.className = 'px-6 py-4';
+                        baixaFantasiaCell.textContent = transacao.baixa_fantasia;
+                    
+                        row.appendChild(fantasiaCell);
+                        row.appendChild(precoFantasiaCell);
+                        row.appendChild(tipoFantasiaCell);
+                        row.appendChild(dataIFantasiaCell);
+                        row.appendChild(dataFFantasiaCell);
+                        row.appendChild(baixaFantasiaCell);
+                    
+                        tbody.appendChild(row);
+                    });
+                    
+                })
+                .catch(error => {
+                    console.error('Erro ao obter os dados do cliente:', error.message);
+                });
+        });
+    });
+});
+
+function inserirPrecoBase(){
+    const fantasiaId = document.getElementById('fantasia').value
+    fetch(`/controle/fantasias/${fantasiaId}/`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao recuperar dados da fantasia');
+        }
+        return response.json(); 
+    })
+    .then(dados => {
+
+        const precoContainer = document.getElementById('preco_fantasia')
+
+        // Já coloca o valor mais barato, para ter uma noção na hora de preencher a transação
+        precoContainer.value = dados.preco_aluguel;
+    })
+}
+
+async function recuperarNomeFantasia(fantasiaId) {
+    try {
+        const response = await fetch(`/controle/fantasias/${fantasiaId}/`);
+        const dados = await response.json();
+        const nomeFantasia = dados.nome_fantasia;
+        return nomeFantasia; // Retorna o valor para ser usado posteriormente
+    } catch (error) {
+        console.error('Erro ao recuperar nome da fantasia:', error);
+    }
+}
+
+function adicionarTransacao() {
+    const clienteId = currentClientId;
+
+    const formData = new FormData(document.getElementById('fantasia-form'));
+
+    fetch(`/controle/clientes/historico/${clienteId}/`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar a fantasia do cliente');
+        }
+        return response.json(); 
+    })
+    .then(data => {
+        document.getElementById('fantasia-form').reset();
+
+        const tbody = document.getElementById('fantasias-table-body');
+        tbody.innerHTML = '';
+
+        data.sort((a, b) => {
+            // Converta as datas para objetos Date para poder compará-las
+            const dateA = new Date(a.data_inicio_fantasia);
+            const dateB = new Date(b.data_inicio_fantasia);
+            
+            // Compare as datas
+            return dateB - dateA;
+        }).forEach(async transacao => {
+
+            const nomeFantasia = await recuperarNomeFantasia(transacao.fantasia_id);
+
+            const row = document.createElement('tr');
+            row.className = 'bg-white border-b';
+        
+            const fantasiaCell = document.createElement('td');
+            fantasiaCell.className = 'px-6 py-4';
+            fantasiaCell.textContent = nomeFantasia;
+        
+            const precoFantasiaCell = document.createElement('td');
+            precoFantasiaCell.className = 'px-6 py-4';
+            precoFantasiaCell.textContent = transacao.preco_fantasia;
+        
+            const tipoFantasiaCell = document.createElement('td');
+            tipoFantasiaCell.className = 'px-6 py-4';
+            tipoFantasiaCell.textContent = transacao.tipo_transacao == 'C' ? 'Compra' : 'Aluguel';
+        
+            const dataIFantasiaCell = document.createElement('td');
+            dataIFantasiaCell.className = 'px-6 py-4';
+            dataIFantasiaCell.textContent = formatDate(transacao.data_inicio_fantasia);
+        
+            const dataFFantasiaCell = document.createElement('td');
+            dataFFantasiaCell.className = 'px-6 py-4';
+            dataFFantasiaCell.textContent = transacao.tipo_transacao != 'C' ? formatDate(transacao.data_fim_fantasia) : '';
+        
+            const baixaFantasiaCell = document.createElement('td');
+            baixaFantasiaCell.className = 'px-6 py-4';
+            baixaFantasiaCell.textContent = transacao.baixa_fantasia;
+        
+            row.appendChild(fantasiaCell);
+            row.appendChild(precoFantasiaCell);
+            row.appendChild(tipoFantasiaCell);
+            row.appendChild(dataIFantasiaCell);
+            row.appendChild(dataFFantasiaCell);
+            row.appendChild(baixaFantasiaCell);
+        
+            tbody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao adicionar a fantasia do cliente:', error.message);
+    });
+}
+
+
+function excluirCliente(event) {
+    // Previne o comportamento padrão do botão
+    event.preventDefault();
+
+    // Obtém o ID do cliente a partir do atributo data-cliente-id
+    const clienteId = event.target.getAttribute('data-cliente-id');
+
+    // Confirmação de exclusão
+    const confirmacao = confirm("Tem certeza que deseja excluir este cliente?");
+    if (!confirmacao) {
+        return;
+    }
+
+    // Faz uma requisição para o servidor para excluir o cliente
+    fetch(`/controle/clientes/deletar/${clienteId}/`)
+    .then(response => {
+        if (response.ok) {
+            event.target.closest('tr').remove();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.message || "Erro ao excluir o cliente.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert("Erro ao excluir o cliente: " + error.message);
+    });
+}
+
+
 document.getElementById('table-search').addEventListener('input', function() {
     var searchText = this.value.toLowerCase();
 
@@ -18,27 +256,34 @@ let currentClientId = null;
 
 document.addEventListener("DOMContentLoaded", function() {
 
-const editarButtons = document.querySelectorAll('[data-modal-target="editar-modal"]');
+const selecionarButtons = document.querySelectorAll('[data-modal-target="editar-modal"]');
 
-editarButtons.forEach(button => {
+selecionarButtons.forEach(button => {
     button.addEventListener("click", function() {
         const clienteId = button.dataset.clienteId;
         currentClientId = clienteId
-        fetch(`../clientes/${clienteId}/`)
+        fetch(`/controle/clientes/${clienteId}/`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro ao obter os dados do cliente');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(
+                data => {
                 document.getElementById('nome_edit').value = data.nome;
                 document.getElementById('cpf_edit').value = data.cpf;
                 document.getElementById('telefone_edit').value = data.telefone;
-                document.getElementById('rg_edit').value = data.rg;
+                document.getElementById('telefone2_edit').value = data.telefone2;
                 document.getElementById('cep_edit').value = data.cep;
-                document.getElementById('endereco_edit').value = data.endereco;
+                document.getElementById('logradouro_edit').value = data.logradouro;
+                document.getElementById('num_logradouro_edit').value = data.num_logradouro;
+                document.getElementById('complemento_logradouro_edit').value = data.complemento_logradouro;
+                document.getElementById('bairro_logradouro_edit').value = data.bairro_logradouro;
+                document.getElementById('uf_logradouro_edit').value = data.uf_logradouro;
+                document.getElementById('municipio_logradouro_edit').value = data.municipio_logradouro;
                 document.getElementById('data_nasc_edit').value = data.data_nasc;
+                document.getElementById('email_edit').value = data.email;
                 document.getElementById('observacao_edit').value = data.observacao;
             })
             .catch(error => {
@@ -48,6 +293,45 @@ editarButtons.forEach(button => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+
+    const selecionarButtons = document.querySelectorAll('[data-modal-target="info-modal"]');
+    
+    selecionarButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const clienteId = button.dataset.clienteId;
+            currentClientId = clienteId
+            fetch(`/controle/clientes/${clienteId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao obter os dados do cliente');
+                    }
+                    return response.json();
+                })
+                .then(
+                    data => {
+                    document.getElementById('nome_info').value = data.nome;
+                    document.getElementById('cpf_info').value = data.cpf;
+                    document.getElementById('telefone_info').value = data.telefone;
+                    document.getElementById('telefone2_info').value = data.telefone2;
+                    document.getElementById('cep_info').value = data.cep;
+                    document.getElementById('logradouro_info').value = data.logradouro;
+                    document.getElementById('num_logradouro_info').value = data.num_logradouro;
+                    document.getElementById('complemento_logradouro_info').value = data.complemento_logradouro;
+                    document.getElementById('bairro_logradouro_info').value = data.bairro_logradouro;
+                    document.getElementById('uf_logradouro_info').value = data.uf_logradouro;
+                    document.getElementById('municipio_logradouro_info').value = data.municipio_logradouro;
+                    document.getElementById('data_nasc_info').value = data.data_nasc;
+                    document.getElementById('email_info').value = data.email;
+                    document.getElementById('observacao_info').value = data.observacao;
+                })
+                .catch(error => {
+                    console.error('Erro ao obter os dados do cliente:', error.message);
+                });
+            });
+        });
+    });
+    
 
 function editarCliente() {
 
@@ -56,7 +340,7 @@ function editarCliente() {
     
     formData.append('cliente_id', clienteId);
 
-    fetch(`../clientes/editar/${clienteId}/`, {
+    fetch(`/controle/clientes/editar/${clienteId}/`, {
         method: 'POST',
         body: formData
     })
@@ -64,7 +348,7 @@ function editarCliente() {
         if (!response.ok) {
             throw new Error('Erro ao editar o cliente');
         }
-        window.location.href = '../clientes/';
+        window.location.href = '/controle/clientes/';
     })
     .catch(error => {
         console.error('Erro ao editar o cliente:', error.message);
@@ -72,12 +356,11 @@ function editarCliente() {
 }
 
 
-
-// ADAPTAR
-
 document.addEventListener('DOMContentLoaded', function () {
     var telInput = document.getElementById('telefone');
     var telEditInput = document.getElementById('telefone_edit');
+    var tel2Input = document.getElementById('telefone2');
+    var tel2EditInput = document.getElementById('telefone2_edit');
     var maxChars = 14; // Defina o número máximo de caracteres
 
     // Função para formatar o telefone
@@ -108,6 +391,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Aplica a formatação ao campo de edição de telefone (tel-edit)
     telEditInput.addEventListener('input', function () {
         telEditInput.value = formatTel(telEditInput.value.replace(/\D/g, ''));
+    });
+    // Aplica a formatação ao campo telefone
+    tel2Input.addEventListener('input', function () {
+        tel2Input.value = formatTel(tel2Input.value.replace(/\D/g, ''));
+    });
+
+    // Aplica a formatação ao campo de edição de telefone (tel-edit)
+    tel2EditInput.addEventListener('input', function () {
+        tel2EditInput.value = formatTel(tel2EditInput.value.replace(/\D/g, ''));
     });
 });
 
@@ -182,34 +474,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function validateCPF(inputId) {
-    var cpfInput = document.getElementById(inputId);
-    var cpfValue = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-
-    if (cpfValue.length !== 11 && cpfValue.length !== 14 || isNaN(cpfValue)) {
-        alert('CPF deve conter 11 dígitos numéricos ou CNPJ deve conter 14 dígitos numéricos.');
-        cpfInput.value = ''; // Limpa o campo
-    }
-}
-
-function validateRG(inputId) {
-    var rgInput = document.getElementById(inputId);
-
-    if (rgInput.value.length > 20) {
-        rgInput.value = '';
-        alert('O RG deve ter 20 dígitos no máximo.');
-    }
-}
-
-function validateTel(inputId) {
-    var telInput = document.getElementById(inputId);
-    var telValue = telInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-
-    if (telValue.length !== 11) {
-        alert('Por favor, insira um número de telefone válido com 11 caracteres.');
-        telInput.value = '';
-    }
-}
 
 function validateCep(inputId, funcao) {
     var cepInput = document.getElementById(inputId);
@@ -229,42 +493,37 @@ function validateCep(inputId, funcao) {
             if (data.erro) {
                 return;
             }
-            var endereco = data.bairro + ", " + data.logradouro;
-            if(funcao == 'E')
-                document.getElementById('endereco_edit').value = endereco;
-            else if(funcao == 'C')
-                document.getElementById('endereco').value = endereco;
-            
+            if(funcao == 'E'){
+                document.getElementById('logradouro_edit').value = data.logradouro;
+                document.getElementById('bairro_logradouro_edit').value = data.bairro;
+                document.getElementById('uf_logradouro_edit').value = data.uf;
+                document.getElementById('municipio_logradouro_edit').value = data.localidade;
+            }
+            else if(funcao == 'C'){
+                document.getElementById('logradouro').value = data.logradouro;
+                document.getElementById('bairro_logradouro').value = data.bairro;
+                document.getElementById('uf_logradouro').value = data.uf;
+                document.getElementById('municipio_logradouro').value = data.localidade;
+            }
         })
         .catch(error => {
             console.error('Erro ao obter dados do CEP:', error);
         });
 }
 
-
-function validateEndereco(inputId) {
-    var endInput = document.getElementById(inputId);
-
-    if (endInput.value.length > 150) {
-        endInput.value = '';
-        alert('O endereço deve ter 150 caracteres no máximo.');
+function toggleDataFim() {
+    const tipoFantasia = document.getElementById('tipo_transacao').value;
+    const dataFimContainer = document.getElementById('data_fim_fantasia_div');
+    
+    if (tipoFantasia === 'C') {
+        dataFimContainer.style.display = 'none';
+    } else {
+        dataFimContainer.style.display = 'block';
     }
 }
 
-function validateObs(inputId) {
-    var obsInput = document.getElementById(inputId);
-
-    if (obsInput.value.length > 200) {
-        obsInput.value = '';
-        alert('A observação deve ter 200 caracteres no máximo.');
-    }
-}
-
-function validateNome(inputId) {
-    var nomeInput = document.getElementById(inputId);
-
-    if (nomeInput.value.length > 100) {
-        nomeInput.value = '';
-        alert('O nome deve ter 100 caracteres no máximo.');
-    }
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', options);
 }

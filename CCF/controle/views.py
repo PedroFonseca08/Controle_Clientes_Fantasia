@@ -187,9 +187,11 @@ def clientes(request):
         return redirect('clientes')
 
     clientes = Cliente.objects.filter(usuario=sessao)
+    fantasias = Fantasia.objects.filter(usuario=sessao)
 
     context = {
         'clientes': clientes,
+        'fantasias': fantasias,
     }
 
     return render(request, 'clientes.html', context)
@@ -355,7 +357,7 @@ def fantasias_cliente(request, id_cliente):
     cliente = get_object_or_404(Cliente, pk=id_cliente)
 
     if request.method == 'POST':
-        fantasia = request.POST.get('fantasia')
+        fantasia = get_object_or_404(Fantasia, pk=request.POST.get('fantasia'))
         preco_fantasia = request.POST.get('preco_fantasia')
         tipo_transacao = request.POST.get('tipo_transacao')
         data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
@@ -371,7 +373,8 @@ def fantasias_cliente(request, id_cliente):
             preco_fantasia=preco_fantasia,
             tipo_transacao=tipo_transacao,
             data_inicio_fantasia=data_inicio_fantasia,
-            data_fim_fantasia=data_fim_fantasia
+            data_fim_fantasia=data_fim_fantasia,
+            baixa_fantasia='S',
         )
         novo_cliente_fantasia.save()
 

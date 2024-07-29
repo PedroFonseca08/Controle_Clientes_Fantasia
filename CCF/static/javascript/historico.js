@@ -15,7 +15,6 @@ function excluirClienteFantasia(event) {
     fetch(`/controle/historico/deletar/${fantasiaClienteId}/`)
     .then(response => {
         if (response.ok) {
-            console.log("oi")
             event.target.closest('tr').remove();
         } else {
             return response.json().then(data => {
@@ -49,8 +48,6 @@ const editarButtons = document.querySelectorAll('[data-modal-target="editar-moda
 editarButtons.forEach(button => {
     button.addEventListener("click", function() {
         const fantasiaClienteId = this.getAttribute('data-fantasia-cliente-id');
-
-        console.log(fantasiaClienteId)
         
         currentFantasiaClienteId = fantasiaClienteId
 

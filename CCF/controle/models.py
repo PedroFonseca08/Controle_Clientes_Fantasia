@@ -53,5 +53,5 @@ class ClienteFantasia(models.Model):
     tipo_transacao = models.CharField(max_length=1, null=False) 
     baixa_fantasia = models.CharField(max_length=1, null=False)
 
-    def __str__(self):                 # função adionada
+    def __str__(self):                 
         return f"{self.cliente.nome_cliente} - {self.fantasia.nome_fantasia}"   

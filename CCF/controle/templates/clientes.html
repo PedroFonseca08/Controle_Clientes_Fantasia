@@ -366,21 +366,25 @@
                 >
                     {% csrf_token %}
                     <div class="grid gap-4 mb-4 grid-cols-6">
-                        
-                        <div class="col-span-6 sm:col-span-2">
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Fantasia</label>
-                            <input type="text" name="fantasia" id="fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite a fantasia do cliente..." required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-2">
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Preço da Fantasia</label>
-                            <input type="text" name="preco_fantasia" id="preco_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o preço da fantasia..." required="">
-                        </div>
                         <div class="col-span-6 sm:col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900">Tipo da Transação</label>
                             <select name="tipo_transacao" id="tipo_transacao" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onchange="toggleDataFim()">
                                 <option value="" disabled selected>Selecione o tipo da transação...</option>
                                 <option value="A">Aluguel</option>
                                 <option value="C">Compra</option>
+                            </select>
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Preço da Fantasia</label>
+                            <input type="text" name="preco_fantasia" id="preco_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Digite o preço da fantasia..." required="">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Fantasia</label>
+                            <select name="fantasia" id="fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onchange="inserirPrecoBase()">
+                                <option value="" disabled selected>Selecione a fantasia...</option>
+                                {% for fantasia in fantasias %}
+                                    <option value="{{fantasia.id}}">  {{ fantasia.nome_fantasia }} </option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -425,6 +429,7 @@
 
 
 {% load static %}
+
 <script src="{% static 'javascript/clientes.js' %}"></script>
 
 {% endblock %}
