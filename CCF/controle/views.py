@@ -405,3 +405,14 @@ def fantasias_cliente(request, id_cliente):
     }
 
     return render(request, 'fantasias_cliente.html', context)
+
+def adicionar_tipo(request):
+
+    if request.method == 'POST':
+        nome_tipo = request.POST.get('nome_tipo')
+        
+        tipo = Tipo(nome_tipo=nome_tipo)
+        
+        tipo.save()
+
+    return render(request, 'fantasias.html')

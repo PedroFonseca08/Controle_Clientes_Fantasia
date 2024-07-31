@@ -19,5 +19,6 @@ urlpatterns = [
     path('historico/<int:id_cliente_fantasia>/', views.detalhes_fantasia_cliente, name='detalhes_fantasia_cliente'),
     path('historico/editar/<int:id_cliente_fantasia>/', views.editar_fantasia_cliente, name='editar_fantasia_cliente'),
     path('historico/deletar/<int:id_cliente_fantasia>/', views.deletar_fantasia_cliente, name='deletar_fantasia_cliente'),
+    path('tipo/', views.adicionar_tipo, name='adicionar_tipo'),
     path('', views.index, name='index'),
 ] 
