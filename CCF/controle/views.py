@@ -353,7 +353,7 @@ def deletar_fantasia_cliente(request, id_cliente_fantasia):
 
 
 @login_required(login_url="/controle/login")
-def fantasias_cliente(request, id_cliente):
+def historico(request, id_cliente):
     cliente = get_object_or_404(Cliente, pk=id_cliente)
 
     if request.method == 'POST':
@@ -385,3 +385,23 @@ def fantasias_cliente(request, id_cliente):
     cliente_fantasias_data = list(cliente_fantasias.values())
 
     return JsonResponse(cliente_fantasias_data, safe=False)
+
+
+@login_required(login_url="/controle/login")
+def fantasias_cliente(request, id_cliente):
+
+    sessao = request.user
+
+    transacoes = ClienteFantasia.objects.filter(cliente__usuario = sessao, cliente__id = id_cliente)
+
+    cliente = Cliente.objects.get(pk=id_cliente)
+
+    fantasias = Fantasia.objects.filter(usuario=sessao)
+
+    context = {
+        'transacoes': transacoes,
+        'cliente': cliente,
+        'fantasias': fantasias,
+    }
+
+    return render(request, 'fantasias_cliente.html', context)
