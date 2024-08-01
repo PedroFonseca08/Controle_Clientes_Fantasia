@@ -367,3 +367,29 @@ def adicionar_tipo(request):
         tipo.save()
 
     return render(request, 'fantasias.html')
+
+@login_required(login_url="/controle/login")
+def set_baixa_fantasia_cliente(request, id_cliente_fantasia):
+    cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
+
+    if cliente_fantasia.baixa_fantasia == 'S':
+        cliente_fantasia.baixa_fantasia = 'N'
+    else:
+        cliente_fantasia.baixa_fantasia = 'S'
+
+    cliente_fantasia.save()
+    
+    sessao = request.user
+
+    transacoes = ClienteFantasia.objects.filter(cliente__usuario = sessao, cliente__id = cliente_fantasia.cliente.id)
+
+    cliente = Cliente.objects.get(pk=cliente_fantasia.cliente.id)
+
+    fantasias = Fantasia.objects.filter(usuario=sessao)
+
+    context = {
+        'transacoes': transacoes,
+        'cliente': cliente,
+        'fantasias': fantasias,
+    }
+    return render(request, 'fantasias_cliente.html', context)

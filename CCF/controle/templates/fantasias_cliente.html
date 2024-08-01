@@ -125,18 +125,21 @@
                         {{ transacao.data_fim_fantasia }}
                         {% endif %}
                     </td>
-                    <td class="px-9 py-3">
-                        <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                        data-id="{{ transacao.id }}"
+                    <td class="px-6 py-3">
                         {% if transacao.baixa_fantasia == "S" %}
-                            checked
-                        {% else %}
-                            unchecked
-                        {% endif %}>
-                    </td>       
-                    <td class="px-6 py-4">
-                        <button data-fantasia-cliente-id="{{ transacao.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirTransacao(event)">Excluir</button>
-                    </td>                      
+                            <button class="icon-button" transacao-id="{{ transacao.id }}" onclick="toggleBaixa(this)">
+                                <span class="material-symbols-outlined" style="color: green;">
+                                    check_box
+                                </span>
+                            </button>
+                        {% elif transacao.baixa_fantasia == "N" %}
+                            <button class="icon-button" transacao-id="{{ transacao.id }}" onclick="toggleBaixa(this)">
+                                <span class="material-symbols-outlined" style="color: rgb(159, 159, 159);">
+                                    check_box_outline_blank
+                                </span>
+                            </button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
