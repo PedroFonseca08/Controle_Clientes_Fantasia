@@ -80,6 +80,34 @@ function toggleBaixa(button){
     })
 }
 
+
+//Excluir Transação
+function excluirTransacao(event) {
+    event.preventDefault();
+
+    const fantasiaClienteId = event.target.getAttribute('data-fantasia-cliente-id');
+
+    const confirmacao = confirm("Tem certeza que deseja excluir esta transação?");
+    if (!confirmacao) {
+        return;
+    }
+
+    fetch(`/controle/historico/deletar/${fantasiaClienteId}/`)
+    .then(response => {
+        if (response.ok) {
+            event.target.closest('tr').remove();
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.message || "Erro ao excluir a transação.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert("Erro ao excluir a transação: " + error.message);
+    });
+}
+
 // Dropdown List com Search
 $(document).ready(function() {
     $('.select2').select2({

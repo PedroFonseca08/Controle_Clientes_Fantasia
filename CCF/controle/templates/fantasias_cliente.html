@@ -125,7 +125,7 @@
                         {{ transacao.data_fim_fantasia }}
                         {% endif %}
                     </td>
-                    <td class="px-6 py-3">
+                    <td class="px-8 py-3">
                         {% if transacao.baixa_fantasia == "S" %}
                             <button class="icon-button" transacao-id="{{ transacao.id }}" onclick="toggleBaixa(this)">
                                 <span class="material-symbols-outlined" style="color: green;">
@@ -140,6 +140,9 @@
                             </button>
                         {% endif %}
                     </td>
+                    <td class="px-6 py-4">
+                        <button data-fantasia-cliente-id="{{ transacao.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirTransacao(event)">Excluir</button>
+                    </td>      
                 </tr>
                 {% endfor %}
             </tbody>
