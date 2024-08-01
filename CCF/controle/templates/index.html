@@ -2,34 +2,38 @@
 
 
 {% block conteudo %}
-    <div class="container mx-auto my-4">
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li class="text-red-500">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    
+<div class="pt-4 pl-4">
+    <div class="lg:fixed flex justify-center pb-5">
+        <button onclick="location.href='{% url 'backup_database' %}'" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Fazer Backup do Banco de Dados
+        </button>
     </div>
-
-    <!-- Conteúdo da página inicial -->
-    <div class="container mx-auto my-4 p-4">
-        <h1 class="text-3xl font-bold">Bem-vindo ao nosso site!</h1>
-        <p class="mt-4">Esta é a página inicial do nosso projeto Django. Use a barra de navegação para acessar outras áreas do site.</p>
-    </div>
-
-    {% comment %} <div class="flex flex-row justify-around">
-        <div>
-        <a href="https://github.com/PedroFonseca08" target="_blank" rel="noopener noreferrer">
-            <img loading="lazy" src="https://avatars.githubusercontent.com/u/108371507?v=4" width="115">
-            <br>
-            <sub>Pedro Fonseca</sub>
-        </a>
+    <div class="flex flex-col justify-between" style="min-height: 80vh;">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold">Bem-vindo ao nosso site!</h1>
+            <p class="mt-4">Esta é a página inicial do nosso projeto Django. Use a barra de navegação para acessar outras áreas do site.</p>
+        </div>
+    
+        <div class="flex flex-col mb-4">
+            <h2 class="text-2xl font-bold flex justify-center">Colaboradores</h2>
+            <div class="flex flex-row justify-center">
+                <a class="m-4 text-center" href="https://github.com/PedroFonseca08" target="_blank" rel="noopener noreferrer">
+                    <img loading="lazy" src="https://avatars.githubusercontent.com/u/108371507?v=4" width="115">
+                    <sub>Pedro Fonseca</sub>
+                </a>
+                <a class="m-4 text-center" href="https://github.com/VZinii" target="_blank" rel="noopener noreferrer">
+                    <img loading="lazy" src="https://avatars.githubusercontent.com/u/64339671?v=4" width="115">
+                    <sub>Ricardo Augusto</sub>
+                </a>
+                <a class="m-4 text-center" href="https://github.com/VZinii" target="_blank" rel="noopener noreferrer">
+                    <img loading="lazy" src="https://avatars.githubusercontent.com/u/108377833?v=4" width="115">
+                    <sub>Vitor Pires</sub>
+                </a>
+            </div> 
+        </div>
         
-        <a href="https://github.com/VZinii" target="_blank" rel="noopener noreferrer">
-            <img loading="lazy" src="https://avatars.githubusercontent.com/u/108377833?v=4" width="115">
-            <br>
-            <sub>Vitor Pires</sub>
-        </a>
-    </div> {% endcomment %}
+    </div> 
+</div> 
+
 {% endblock %}
