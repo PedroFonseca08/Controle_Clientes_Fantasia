@@ -84,12 +84,6 @@ def fantasias_view(request):
         tipo_fantasia_id = request.POST.get('tipo_fantasia')
         tipo_fantasia = get_object_or_404(Tipo, pk=tipo_fantasia_id)
 
-        #file = request.FILES.get('img_fantasia')
-        #Para manipular a imagem tem que usar o Pilow ?
-        #img = Image.open(file)
-        #img.resize(512, 640)
-        #Fantasia(imagem_fantasia=file)
-
         fantasia = Fantasia(usuario=user, nome_fantasia=nome, tipo_fantasia=tipo_fantasia, preco_venda=preco_venda, preco_aluguel=preco_aluguel)
         fantasia.save()
 
@@ -257,65 +251,21 @@ def editar_cliente(request, id_cliente):
 
     return render(request, 'clientes.html', context)
 
-
 @login_required(login_url="/controle/login")
-def historico_view(request):
-    
-    sessao = request.user
-
-    clientesFantasia = ClienteFantasia.objects.filter(cliente__usuario = sessao)
-    
-    context = {
-        'historico': clientesFantasia
-    }
-
-    return render(request, 'historico.html', context)
-
-@login_required(login_url="/controle/login")
-def detalhes_fantasia_cliente(request, id_cliente_fantasia):
+def editar_fantasia_cliente(request, id_cliente_fantasia):
     try:
-        cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
-        cliente_fantasia_data = {
-            'nome': cliente_fantasia.cliente.nome_cliente,
-            # TO DO
-            'nome_fantasia': cliente_fantasia.fantasia.nome_fantasia,
-            'preco_fantasia': cliente_fantasia.preco_fantasia,
-            'tipo_transacao': cliente_fantasia.tipo_transacao,
-            'data_inicio_fantasia': cliente_fantasia.data_inicio_fantasia,
-            'data_fim_fantasia': cliente_fantasia.data_fim_fantasia.strftime('%Y-%m-%d') if cliente_fantasia.data_fim_fantasia else None,
-        }
-        return JsonResponse(cliente_fantasia_data)
-    except Cliente.DoesNotExist:
+        cliente_fantasia = ClienteFantasia.objects.get(pk=id_cliente_fantasia)
+        baixa_fantasia = request.POST.get('baixa_fantasia', cliente_fantasia.baixa_fantasia)
+        
+        cliente_fantasia.baixa_fantasia = baixa_fantasia
+
+        cliente_fantasia.save()
+        return JsonResponse({'success': True, 'message': 'Transação atualizada com sucesso.'})
+    except ClienteFantasia.DoesNotExist:
         return JsonResponse({'error': 'Cliente Fantasia não encontrado'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
     
-@login_required(login_url="/controle/login")
-def editar_fantasia_cliente(request, id_cliente_fantasia):
-
-    cliente_fantasia = get_object_or_404(ClienteFantasia, pk=id_cliente_fantasia)
-
-    if request.method == 'POST':
-        cliente_fantasia.fantasia = request.POST.get('fantasia')
-        cliente_fantasia.preco_fantasia = request.POST.get('preco_fantasia')
-        cliente_fantasia.tipo_transacao = request.POST.get('tipo_transacao')
-        cliente_fantasia.data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
-        if cliente_fantasia.tipo_transacao == 'A':
-            cliente_fantasia.data_fim_fantasia = request.POST.get('data_fim_fantasia')
-        else:
-            cliente_fantasia.data_fim_fantasia = None
-
-        cliente_fantasia.save()
-    
-    sessao = request.user
-
-    clientesFantasia = ClienteFantasia.objects.filter(cliente__usuario = sessao)
-
-    context = {
-        'historico': clientesFantasia
-    }
-
-    return render(request, 'historico.html', context)
 
 @login_required(login_url="/controle/login")
 def deletar_cliente(request, id_cliente):
@@ -349,7 +299,7 @@ def deletar_fantasia_cliente(request, id_cliente_fantasia):
         'historico': clientesFantasia
     }
 
-    return render(request, 'historico.html', context)
+    return render(request, 'fantasias_cliente.html', context)
 
 
 @login_required(login_url="/controle/login")
@@ -361,6 +311,7 @@ def historico(request, id_cliente):
         preco_fantasia = request.POST.get('preco_fantasia')
         tipo_transacao = request.POST.get('tipo_transacao')
         data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
+        baixa_fantasia = request.POST.get('baixa_fantasia')
         
         if tipo_transacao == 'A':
             data_fim_fantasia = request.POST.get('data_fim_fantasia')
@@ -374,7 +325,7 @@ def historico(request, id_cliente):
             tipo_transacao=tipo_transacao,
             data_inicio_fantasia=data_inicio_fantasia,
             data_fim_fantasia=data_fim_fantasia,
-            baixa_fantasia='S',
+            baixa_fantasia=baixa_fantasia,
         )
         novo_cliente_fantasia.save()
 

@@ -3,11 +3,9 @@
 {% block conteudo %}
 
 <div class="flex">
-    <div class="relative p-4 w-3/6 max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow">
-            <!-- Modal header -->
-            <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-4 rounded-t">
+    <div class="relative pt-4 pl-4 pr-116 w-3/6 max-h-full">
+        <div class="fixed w-[48%] bg-white rounded-lg shadow">
+            <div class="top-0 z-50 bg-white border-b border-gray-200 p-4 rounded-t">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900">
                         Fantasias do Cliente
@@ -19,8 +17,6 @@
                 <label class="block mb-2 text-sm font-medium text-gray-900">Nome do Cliente</label>
                 <input type="text" value="{{cliente.nome_cliente}}" disabled="disabled" name="nomeCF" id="nomeCF" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" readonly>
             </div>
-
-            <!-- Modal body -->
             <form 
             class="p-4 md:p-5"
             id="fantasia-form"
@@ -30,7 +26,7 @@
                     <div class="col-span-6 sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900">Tipo da Transação</label>
                         <select name="tipo_transacao" id="tipo_transacao" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onchange="toggleDataFim()">
-                            <option value="" disabled selected>Selecione o tipo da transação...</option>
+                            <option value="" disabled selected>Selecione o tipo...</option>
                             <option value="A">Aluguel</option>
                             <option value="C">Compra</option>
                         </select>
@@ -59,11 +55,19 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">Data de Fim</label>
                         <input type="date" name="data_fim_fantasia" id="data_fim_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
                     </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Baixa</label>
+                        <select name="baixa_fantasia" id="baixa_fantasia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onchange="toggleDataFim()">
+                            <option value="S" disabled selected>Dar baixa na fantasia...</option>
+                            <option value="S">Sim</option>
+                            <option value="N">Não</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <button data-cliente-id="{{ cliente.id }}" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" onclick="adicionarTransacao(this)">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Adicionar Fantasia
+                    Adicionar Transação
                 </button>
             </form>              
         </div>
@@ -71,7 +75,7 @@
 
 
     <div class="relative overflow-x-auto sm:rounded-lg w-3/6 p-4">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3 w-1/4">
@@ -91,6 +95,8 @@
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Baixa
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                     </th>
                 </tr>
             </thead>
@@ -119,15 +125,25 @@
                         {{ transacao.data_fim_fantasia }}
                         {% endif %}
                     </td>
-                    <td class="px-6 py-3">
-                        {{ transacao.data_baixa_fantasia }}
-                    </td>
+                    <td class="px-9 py-3">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                        data-id="{{ transacao.id }}"
+                        {% if transacao.baixa_fantasia == "S" %}
+                            checked
+                        {% else %}
+                            unchecked
+                        {% endif %}>
+                    </td>       
+                    <td class="px-6 py-4">
+                        <button data-fantasia-cliente-id="{{ transacao.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirTransacao(event)">Excluir</button>
+                    </td>                      
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
 
 <style>
     .select2-container--default .select2-selection--single {
@@ -157,6 +173,7 @@
         top: 8px;
         right: 7px;
     }
+
 </style>
 
 
