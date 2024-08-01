@@ -309,3 +309,20 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR', options);
 }
+
+function limparCampos(){
+    document.getElementById('nome').value = "";
+    document.getElementById('cpf').value = "";
+    document.getElementById('telefone').value = "";
+    document.getElementById('telefone2').value = "";
+    document.getElementById('cep').value = "";
+    document.getElementById('logradouro').value = "";
+    document.getElementById('num_logradouro').value = "";
+    document.getElementById('complemento_logradouro').value = "";
+    document.getElementById('bairro_logradouro').value = "";
+    document.getElementById('uf_logradouro').value = "";
+    document.getElementById('municipio_logradouro').value = "";
+    document.getElementById('data_nasc').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('observacao').value = "";
+}
