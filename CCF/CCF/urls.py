@@ -8,6 +8,7 @@ urlpatterns = [
     path("controle/", include("controle.urls")),
     path("admin/", admin.site.urls),
     path('', lambda request: redirect('controle/', permanent=True)),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
