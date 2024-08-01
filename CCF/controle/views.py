@@ -250,21 +250,6 @@ def editar_cliente(request, id_cliente):
     }
 
     return render(request, 'clientes.html', context)
-
-@login_required(login_url="/controle/login")
-def editar_fantasia_cliente(request, id_cliente_fantasia):
-    try:
-        cliente_fantasia = ClienteFantasia.objects.get(pk=id_cliente_fantasia)
-        baixa_fantasia = request.POST.get('baixa_fantasia', cliente_fantasia.baixa_fantasia)
-        
-        cliente_fantasia.baixa_fantasia = baixa_fantasia
-
-        cliente_fantasia.save()
-        return JsonResponse({'success': True, 'message': 'Transação atualizada com sucesso.'})
-    except ClienteFantasia.DoesNotExist:
-        return JsonResponse({'error': 'Cliente Fantasia não encontrado'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
     
 
 @login_required(login_url="/controle/login")
