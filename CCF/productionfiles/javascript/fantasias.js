@@ -110,3 +110,22 @@ function excluirFantasia(event) {
         alert("Erro ao excluir a fantasia: " + error.message);
     });
 }
+
+function adicionarTipo(){
+
+    const formData = new FormData(document.getElementById('tipo-form'));
+    
+    fetch(`/controle/tipo/`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao Adicionar Tipo');
+        }
+        window.location.href = '/controle/fantasias/';
+    })
+    .catch(error => {
+        console.error('Erro ao adicionar tipo:', error.message);
+    });
+}
