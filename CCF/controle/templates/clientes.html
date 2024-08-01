@@ -42,7 +42,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for cliente in clientes %}
+                        {% for cliente in clientes_devedores %}
+                        <tr class="bg-white border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {{ cliente.nome_cliente|truncatechars:52 }}    
+                                <i class="fas fa-exclamation-circle text-red-500 ml-2" title="Cliente devedor"></i>
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ cliente.tel_cliente }}
+                            </td>
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" data-modal-target="info-modal" data-modal-toggle="info-modal" class="font-medium text-blue-600 hover:underline">Informações</button>
+                            </td>
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Editar</button>
+                            </td>
+                            <td class="px-2 py-4">
+                                <form action="./fantasias/{{cliente.id}}">
+                                    <button type="submit" id="add-fantasias" data-cliente-id="{{ cliente.id }}" class="font-medium text-blue-600 hover:underline">Histórico</button>
+                                </form>
+                            </td>
+                            <td class="px-2 py-4">
+                                <button data-cliente-id="{{ cliente.id }}" class="font-medium text-blue-600 hover:underline" onclick="excluirCliente(event)">Excluir</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tbody>
+                        {% for cliente in clientes_em_dia %}
                         <tr class="bg-white border-b">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ cliente.nome_cliente|truncatechars:52 }}

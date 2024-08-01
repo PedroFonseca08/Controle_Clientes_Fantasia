@@ -179,12 +179,20 @@ def clientes(request):
         novo_cliente.save()
 
         return redirect('clientes')
+    
+    cliente_fantasias = ClienteFantasia.objects.filter(cliente__usuario=sessao, baixa_fantasia='N')
 
-    clientes = Cliente.objects.filter(usuario=sessao)
+    cliente_ids = cliente_fantasias.values_list('cliente_id', flat=True).distinct()
+
+    clientes_devedores = Cliente.objects.filter(usuario=sessao, id__in=cliente_ids).order_by('nome_cliente')
+    
+    clientes_em_dia = Cliente.objects.filter(usuario=sessao).exclude(id__in=cliente_ids).order_by('nome_cliente')
+    
     fantasias = Fantasia.objects.filter(usuario=sessao)
 
     context = {
-        'clientes': clientes,
+        'clientes_devedores': clientes_devedores,
+        'clientes_em_dia' : clientes_em_dia,
         'fantasias': fantasias,
     }
 
