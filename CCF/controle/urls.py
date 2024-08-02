@@ -15,6 +15,7 @@ urlpatterns = [
     path('clientes/fantasias/baixa/<int:id_cliente_fantasia>/', views.set_baixa_fantasia_cliente, name='set_baixa_fantasia_cliente'),
     path('fantasias/', views.fantasias_view, name='fantasias'),
     path('fantasias/<int:id_fantasia>/', views.detalhes_fantasia, name='detalhes_fantasia'),
+    path('fantasias/tipo/<int:id_tipo>/', views.filtrar_fantasia, name='filtrar_fantasia'),
     path('fantasias/editar/<int:id_fantasia>/', views.editar_fantasia, name='editar_fantasia'),
     path('fantasias/deletar/<int:id_fantasia>/', views.deletar_fantasia, name='deletar_fantasia'),
     path('historico/deletar/<int:id_cliente_fantasia>/', views.deletar_fantasia_cliente, name='deletar_fantasia_cliente'),

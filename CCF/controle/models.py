@@ -22,6 +22,16 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f"{self.nome_cliente}"
+    
+    def save(self, *args, **kwargs):
+        self.nome_cliente = self.nome_cliente.upper()
+        self.logradouro_cliente = self.logradouro_cliente.upper()
+        self.complemento_logradouro = self.complemento_logradouro.upper()
+        self.bairro_logradouro = self.bairro_logradouro.upper()
+        self.uf_logradouro = self.uf_logradouro.upper()
+        self.municipio_logradouro = self.municipio_logradouro.upper()
+        self.observacao_cliente = self.observacao_cliente.upper()
+        super(Cliente, self).save(*args, **kwargs)
 
     class Meta:
         constraints = [
@@ -29,10 +39,15 @@ class Cliente(models.Model):
         ]
 
 class Tipo(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nome_tipo = models.CharField(max_length=60, unique=True, null=False)
 
     def __str__(self):
         return f"{self.nome_tipo}"
+    
+    def save(self, *args, **kwargs):
+        self.nome_tipo = self.nome_tipo.upper()
+        super(Tipo, self).save(*args, **kwargs)
 
 class Fantasia(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,6 +58,10 @@ class Fantasia(models.Model):
 
     def __str__(self):
         return f"{self.nome_fantasia}"
+    
+    def save(self, *args, **kwargs):
+        self.nome_fantasia = self.nome_fantasia.upper()
+        super(Fantasia, self).save(*args, **kwargs)
 
 class ClienteFantasia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)

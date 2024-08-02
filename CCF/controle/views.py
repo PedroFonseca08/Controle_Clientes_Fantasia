@@ -79,13 +79,10 @@ def clientes_view(request):
 @login_required(login_url="/controle/login")
 def fantasias_view(request):
     if request.method == "GET":
-        # Pego todas as minhas fantasias do BD e mando pra minha página:
-        # Quando eu passo os objetos em si para o template, consigo acessar os atributos da tabela da chave estrangeira.
-        # Existe outra forma de fazer isso? Era pra ser assim mesmo?
         sessao = request.user
         
         fantasias = Fantasia.objects.filter(usuario=sessao)
-        tipos = Tipo.objects.all()
+        tipos = Tipo.objects.filter(usuario=sessao)
         context = {
             'fantasias': fantasias,
             'tipos': tipos
@@ -111,7 +108,7 @@ def detalhes_fantasia(request, id_fantasia):
         fantasia = get_object_or_404(Fantasia, pk=id_fantasia)
         fantasia_data = {
             'nome_fantasia': fantasia.nome_fantasia,
-            'tipo_fantasia': fantasia.tipo_fantasia.id, #estou usando o id do tipo como valor de referência no html
+            'tipo_fantasia': fantasia.tipo_fantasia.id, 
             'preco_venda': fantasia.preco_venda,
             'preco_aluguel': fantasia.preco_aluguel,
         }
@@ -120,6 +117,24 @@ def detalhes_fantasia(request, id_fantasia):
         return JsonResponse({'error': 'Fantasia não encontrada'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+@login_required(login_url="/controle/login")
+def filtrar_fantasia(request, id_tipo):
+
+    sessao = request.user
+    
+    if(id_tipo != None):
+        fantasias = Fantasia.objects.filter(usuario=sessao, tipo_fantasia=id_tipo)
+    else:
+        fantasias = Fantasia.objects.filter(usuario=sessao)
+
+    tipos = Tipo.objects.filter(usuario=sessao)
+
+    context = {
+        'fantasias': fantasias,
+        'tipos': tipos,
+    }
+    return render(request, 'fantasias.html', context)
     
 @login_required(login_url="/controle/login")
 def editar_fantasia(request, id_fantasia):
@@ -141,7 +156,7 @@ def editar_fantasia(request, id_fantasia):
     sessao = request.user
         
     fantasias = Fantasia.objects.filter(usuario=sessao)
-    tipos = Tipo.objects.all()
+    tipos = Tipo.objects.filter(usuario=sessao)
 
     context = {
         'fantasias' : fantasias,
@@ -368,10 +383,12 @@ def fantasias_cliente(request, id_cliente):
 
 def adicionar_tipo(request):
 
+    sessao = request.user
+
     if request.method == 'POST':
         nome_tipo = request.POST.get('nome_tipo')
         
-        tipo = Tipo(nome_tipo=nome_tipo)
+        tipo = Tipo(usuario=sessao, nome_tipo=nome_tipo)
         
         tipo.save()
 

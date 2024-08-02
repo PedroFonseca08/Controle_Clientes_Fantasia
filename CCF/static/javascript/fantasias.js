@@ -129,3 +129,14 @@ function adicionarTipo(){
         console.error('Erro ao adicionar tipo:', error.message);
     });
 }
+
+function filtrarFantasia() {
+    const tipo_fantasia_filtro = document.getElementById('tipo_fantasia_filtro').value;
+
+    if(tipo_fantasia_filtro == "T"){
+        window.location.href = `/controle/fantasias/`;
+    }
+    else if (tipo_fantasia_filtro) {
+        window.location.href = `/controle/fantasias/tipo/${tipo_fantasia_filtro}/`;
+    } 
+}
