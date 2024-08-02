@@ -209,7 +209,7 @@ def clientes(request):
 
         novo_cliente.save()
 
-        return redirect('clientes')
+        return redirect('fantasias_cliente', id_cliente=novo_cliente.id)
     
     cliente_fantasias = ClienteFantasia.objects.filter(cliente__usuario=sessao, baixa_fantasia='N')
 
