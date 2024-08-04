@@ -51,7 +51,7 @@ class Tipo(models.Model):
 
 class Fantasia(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    nome_fantasia = models.CharField(max_length=60, unique=True)
+    nome_fantasia = models.CharField(max_length=60)
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     preco_aluguel = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     tipo_fantasia = models.ForeignKey(Tipo, on_delete=models.CASCADE)
