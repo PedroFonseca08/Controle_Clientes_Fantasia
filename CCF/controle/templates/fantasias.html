@@ -67,10 +67,18 @@
                                 {{ fantasia.tipo_fantasia.nome_tipo }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ fantasia.preco_aluguel }}
+                                {% if fantasia.preco_aluguel %}
+                                    {{ fantasia.preco_aluguel }}
+                                {% else %}
+                                    -
+                                {% endif %}
                             </td>
                             <td class="px-6 py-4">
-                                {{ fantasia.preco_venda }}
+                                {% if fantasia.preco_venda %}
+                                    {{ fantasia.preco_venda }}
+                                {% else %}
+                                    -
+                                {% endif %}   
                             </td>
                             <td class="px-6 py-4">
                                 <button data-fantasia-id="{{ fantasia.id }}" data-modal-target="editar-modal" data-modal-toggle="editar-modal" class="font-medium text-blue-600 hover:underline">Editar</button>
