@@ -20,10 +20,8 @@ def backup_database(request):
         with open(db_path, 'rb') as db_file:
             response = HttpResponse(db_file.read(), content_type='application/x-sqlite3')
             response['Content-Disposition'] = f'attachment; filename="backup_{request.user.username}.sqlite3"'
-            messages.success(request, "Backup gerado com sucesso.")
             return response
     except Exception as e:
-        messages.error(request, f"Erro ao criar o backup: {str(e)}")
         return redirect(request.META.get('HTTP_REFERER', '/'))
     
 @login_required(login_url="/controle/login")
