@@ -63,6 +63,12 @@ class Fantasia(models.Model):
         self.nome_fantasia = self.nome_fantasia.upper()
         super(Fantasia, self).save(*args, **kwargs)
 
+class FormaPagamento(models.Model):
+    forma_pagamento = models.CharField(max_length=60, unique=True, null=False)
+
+    def __str__(self):
+        return f"{self.forma_pagamento}"
+
 class ClienteFantasia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fantasia = models.ForeignKey(Fantasia, on_delete=models.CASCADE)
@@ -71,6 +77,7 @@ class ClienteFantasia(models.Model):
     data_fim_fantasia = models.DateField(blank=True, null=True)
     tipo_transacao = models.CharField(max_length=1, null=False) 
     baixa_fantasia = models.CharField(max_length=1, null=False)
+    forma_pagamento = models.ForeignKey(FormaPagamento, on_delete=models.CASCADE)
 
     def __str__(self):                 
         return f"{self.cliente.nome_cliente} - {self.fantasia.nome_fantasia}"   

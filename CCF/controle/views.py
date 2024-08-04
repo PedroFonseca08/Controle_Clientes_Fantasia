@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Cliente, ClienteFantasia, Fantasia, Tipo
+from .models import Cliente, ClienteFantasia, Fantasia, Tipo, FormaPagamento
 import os
 
 
@@ -336,7 +336,9 @@ def historico(request, id_cliente):
         tipo_transacao = request.POST.get('tipo_transacao')
         data_inicio_fantasia = request.POST.get('data_inicio_fantasia')
         baixa_fantasia = request.POST.get('baixa_fantasia')
-        
+
+        forma_pagamento = get_object_or_404(FormaPagamento, pk=request.POST.get('forma_pagamento'))
+
         if tipo_transacao == 'A':
             data_fim_fantasia = request.POST.get('data_fim_fantasia')
         else:
@@ -350,6 +352,7 @@ def historico(request, id_cliente):
             data_inicio_fantasia=data_inicio_fantasia,
             data_fim_fantasia=data_fim_fantasia,
             baixa_fantasia=baixa_fantasia,
+            forma_pagamento=forma_pagamento,
         )
         novo_cliente_fantasia.save()
 
@@ -373,10 +376,13 @@ def fantasias_cliente(request, id_cliente):
 
     fantasias = Fantasia.objects.filter(usuario=sessao)
 
+    pagamentos = FormaPagamento.objects.all()
+
     context = {
         'transacoes': transacoes,
         'cliente': cliente,
         'fantasias': fantasias,
+        'pagamentos': pagamentos,
     }
 
     return render(request, 'fantasias_cliente.html', context)

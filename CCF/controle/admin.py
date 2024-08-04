@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Cliente, Tipo, Fantasia, ClienteFantasia
+from .models import  Cliente, Tipo, Fantasia, ClienteFantasia, FormaPagamento
 
 class ClienteAdmin(admin.ModelAdmin):
     list_display = ("nome_cliente", "tel_cliente")
@@ -14,6 +14,10 @@ class TipoAdmin(admin.ModelAdmin):
     list_display = []
     list_display.append("nome_tipo")
 
+class PagamentoAdmin(admin.ModelAdmin):
+    list_display = []
+    list_display.append("forma_pagamento")
+
 class TransacaoAdmin(admin.ModelAdmin):
     list_display = ("_nome_cliente", "_nome_fantasia", "data_inicio_fantasia", "data_fim_fantasia")
 
@@ -26,4 +30,5 @@ class TransacaoAdmin(admin.ModelAdmin):
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Tipo, TipoAdmin)
 admin.site.register(Fantasia, FantasiaAdmin)
+admin.site.register(FormaPagamento, PagamentoAdmin)
 admin.site.register(ClienteFantasia, TransacaoAdmin)
