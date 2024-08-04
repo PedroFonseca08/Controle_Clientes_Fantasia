@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('clientes/', views.clientes, name='clientes'),
     path('clientes/<int:id_cliente>/', views.detalhes_cliente, name='detalhes_cliente'),
+    path('clientes/cpf/<str:cpf>/', views.verifica_cpf, name='verifica_cpf'),
     path('clientes/editar/<int:id_cliente>/', views.editar_cliente, name='editar_cliente'),
     path('clientes/deletar/<int:id_cliente>/', views.deletar_cliente, name='deletar_cliente'),
     path('clientes/historico/<int:id_cliente>/', views.historico, name='historico'),

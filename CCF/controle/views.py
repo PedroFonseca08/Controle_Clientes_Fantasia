@@ -256,6 +256,16 @@ def detalhes_cliente(request, id_cliente):
         return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+
+@login_required(login_url="/controle/login")
+def verifica_cpf(request, cpf):
+    try:
+        cliente = Cliente.objects.get(cpf_cliente=cpf)
+        return JsonResponse({'existe': True, 'nome_cliente': cliente.nome_cliente})
+    except Cliente.DoesNotExist:
+        return JsonResponse({'existe': False})
+    
 
 @login_required(login_url="/controle/login")
 def editar_cliente(request, id_cliente):
@@ -294,7 +304,7 @@ def editar_cliente(request, id_cliente):
 @login_required(login_url="/controle/login")
 def deletar_cliente(request, id_cliente):
     
-    sessao = request.user;
+    sessao = request.user
 
     cliente = get_object_or_404(Cliente, pk=id_cliente)
 

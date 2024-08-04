@@ -121,6 +121,30 @@ function formatDate(dateString) {
 
 
 //--------------------------------------------------------//
+// Função responsável por verificar a existência de Cliente com aquele CPF
+function verificaCPF() {
+    const cpf = document.getElementById('cpf').value;
+    
+    if((cpf.length != 14) && (cpf.length != 18)){
+        alert("O CPF/CNPJ deve ter 11(CPF) ou 14(CNPJ) dígitos!");
+        document.getElementById('cpf').value = "";
+    }
+    else{
+        fetch(`/controle/clientes/cpf/${cpf}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.existe) {
+                alert("Este CPF já está sendo usado pelo cliente de nome " + data.nome_cliente);
+                document.getElementById('cpf').value = "";
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar o CPF:', error);
+        });
+    }
+}
+
+//--------------------------------------------------------//
 // Função responsável por limpar os campos de Adicionar Cliente
 function limparCampos(){
     document.getElementById('nome').value = "";
