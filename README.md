@@ -30,4 +30,4 @@ Este projeto é uma aplicação web desenvolvida para gerenciar uma loja de fant
 - VITOR PIRES ZINI **202110169** *(vitor.zini@estudante.ufla.br)*
 
 ## Diagrama ER
-![Diagrama ER](https://github.com/PedroFonseca08/Controle_Clientes_Fantasia/blob/main/CCF/static/ERdiagram.png)
+![Diagrama ER](https://github.com/PedroFonseca08/Controle_Clientes_Fantasia/blob/main/CCF/static/ERdiagram.jpg)
